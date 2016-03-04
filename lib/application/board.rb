@@ -16,9 +16,9 @@ module Minesweeper
     attr_reader :height, :width, :level, :board
 
     def initialize(height: 9, width: 9, level: :beginner)
-      @height = height.to_i
-      @width  = width.to_i
-      @level  = level
+      @height = height.to_i || 9
+      @width  = width.to_i  || 9
+      @level  = level       || :beginner
       @board  = []
     end
 
@@ -43,7 +43,7 @@ module Minesweeper
         if line.strip.match(/exit|end/)
           raise GameOver
         end
-        unless x && y 
+        unless x && y
           puts 'two coordinates needed'
           play
         end
@@ -67,7 +67,7 @@ module Minesweeper
       surrounding_bombs = number_of_boms_nearby(x,y)
       cell.open(surrounding_bombs)
       raise GameOver if cell.bomb
-      raise GameWon  if opened_all_available_cells? 
+      raise GameWon  if opened_all_available_cells?
     end
 
     private
@@ -101,7 +101,7 @@ module Minesweeper
       return if row.nil?
       # return if there are not row above or below
       return if board.first == row || board.last == row
-      first_el = x.zero? ? x : x
+      first_el = x.zero? ? x : x-1
       last_el  = (row[x] == row.last) ? x : x+1
       row[first_el..last_el]
     end
