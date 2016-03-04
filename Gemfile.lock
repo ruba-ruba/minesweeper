@@ -36,6 +36,3 @@ DEPENDENCIES
   pry
   rspec (~> 3.4.0)
   simplecov (~> 0.9.1)
-
-BUNDLED WITH
-   1.10.6

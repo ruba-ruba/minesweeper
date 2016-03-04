@@ -1,4 +1,5 @@
 require 'pry'
+require 'matrix'
 
 require_relative 'application/board'
 require_relative 'application/mine_board'
