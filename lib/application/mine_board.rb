@@ -6,14 +6,6 @@ module Minesweeper
       self
     end
 
-    def draw
-      board.each do |row|
-        row.each do |cell|
-          cell.draw
-        end && puts
-      end
-    end
-
     private
 
     def number_of_bombs
@@ -28,7 +20,8 @@ module Minesweeper
         else
           raise NotImplementedError, 'unknown level'
         end
-      (bomb_percent * number_of_cells).to_i
+      number = (bomb_percent * number_of_cells).to_i
+      number.zero? ? 1 : number
     end
 
     def add_bombs(number = number_of_bombs)
@@ -38,7 +31,6 @@ module Minesweeper
         add_bombs(number)
       end
     end
-
 
     def random_row
       Random.rand(height)
