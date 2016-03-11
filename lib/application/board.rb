@@ -13,20 +13,68 @@ module Minesweeper
   end
 
   class Board
-    attr_reader :height, :width, :level, :board
+    attr_reader :height, :width, :level, :board, :window
 
-    def initialize(height: 9, width: 9, level: :beginner)
-      @height = height.to_i || 9
-      @width  = width.to_i  || 9
-      @level  = level       || :beginner
+    def initialize(height: 9, width: 9, level: :beginner, window: nil)
+      @height = (height.to_i) || 9
+      @width  = (width.to_i)  || 9
+      @level  = level         || :beginner
       @board  = []
+      @window = window
+      fill_board
     end
 
-    def draw
-      board.each do |row|
-        row.each do |cell|
-          cell.draw
-        end && puts
+    # def draw
+    #   board.each do |row|
+    #     row.each do |cell|
+    #       cell.draw
+    #     end && puts
+    #   end
+    # end
+
+
+    def draw_board
+      window.clear
+      board.each_index do |row_index|
+        (1..(width*3)).each_slice(3).with_index do |cell_ary, index| # dummy staff
+          cell = board[row_index][index]
+          # binding.pry
+          # close_screen
+          window.setpos(row_index, cell_ary[0])
+          window.addstr cell.draw
+        end
+      end
+      window.refresh
+    end
+
+    def play(stdy=nil, stdx=nil)
+      draw_board
+      window.setpos(stdy, stdx) if stdx && stdy
+
+      while true
+        x = window.curx
+        y = window.cury
+        window.keypad = true
+        ch =  window.getch
+        case ch
+        when KEY_UP
+        when KEY_DOWN
+        when KEY_LEFT
+          if x <= 2
+            window.setpos(y-1,(width*3)-1)
+            next
+          end
+          if x >= width*3
+            window.setpos(y,x-2)
+          else
+            window.setpos(y,x-3)
+          end
+        when KEY_RIGHT
+        when 10
+          open_cell(x,y)
+          play(y,x)
+        end
+        window.refresh
       end
     end
 
@@ -37,35 +85,37 @@ module Minesweeper
       self
     end
 
-    def play
-      ARGF.each do |line|
-        x, y = line.strip.split
-        if line.strip.match(/exit|end/)
-          raise GameOver
-        end
-        unless x && y
-          puts 'two coordinates needed'
-          play
-        end
-        if x.to_i > width || y.to_i > height || x.to_i.zero? || y.to_i.zero?
-          puts 'coordinates out of valid range'
-          play
-        end
-        open_cell(x.to_i-1, y.to_i-1)
-        puts "opened cell with x: #{x}, y: #{y}"
-        self.draw
-      end
-    rescue GameOver, GameWon => e 
-      puts
-      open_all_cells && draw
-      puts e.message
-      exit
-    end
+    # def play
+    #   ARGF.each do |line|
+    #     x, y = line.strip.split
+    #     if line.strip.match(/exit|end/)
+    #       raise GameOver
+    #     end
+    #     unless x && y
+    #       puts 'two coordinates needed'
+    #       play
+    #     end
+    #     if x.to_i > width || y.to_i > height || x.to_i.zero? || y.to_i.zero?
+    #       puts 'coordinates out of valid range'
+    #       play
+    #     end
+    #     open_cell(x.to_i-1, y.to_i-1)
+    #     puts "opened cell with x: #{x}, y: #{y}"
+    #     self.draw
+    #   end
+    # rescue GameOver, GameWon => e
+    #   puts
+    #   open_all_cells && draw
+    #   puts e.message
+    #   exit
+    # end
 
     def open_cell(x,y)
-      cell = board[x][y]
-      surrounding_bombs = number_of_boms_nearby(x,y)
-      cell.open(surrounding_bombs)
+      x = x / 3 # original cell
+      # binding.pry
+      cell = board[y][x]
+      # surrounding_bombs = number_of_boms_nearby(x,y)
+      cell.open()
       raise GameOver if cell.bomb
       raise GameWon  if opened_all_available_cells?
     end

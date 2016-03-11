@@ -18,15 +18,16 @@ module Minesweeper
     def draw
       case status
       when :initial
-        print '_'
+        "[ ]"
       when :opened
-        print "#{pointer}"
+        "[#{pointer}]"
       else
         raise NotImplementedError
       end
     end
 
-    def open(number_of_boms_nearby)
+    # remove zero stub
+    def open(number_of_boms_nearby = 0)
       self.status  = :opened
       self.pointer =
         if bomb
