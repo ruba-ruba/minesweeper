@@ -13,6 +13,12 @@ module Minesweeper
   end
 
   class Board
+    require 'forwardable'
+
+    extend Forwardable
+
+    def_delegators :@window, :curx, :cury  
+
     attr_reader :height, :width, :level, :board, :window
 
     def initialize(height: 9, width: 9, level: :beginner, window: nil)
@@ -36,15 +42,25 @@ module Minesweeper
     def draw_board
       window.clear
       board.each_index do |row_index|
-        (1..(width*3)).each_slice(3).with_index do |cell_ary, index| # dummy staff
+        (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index| # dummy staff
           cell = board[row_index][index]
-          # binding.pry
-          # close_screen
+          # debug({row_index: row_index, index: index-1})
           window.setpos(row_index, cell_ary[0])
-          window.addstr cell.draw
+          window.addstr cell.draw 
         end
       end
       window.refresh
+      window.setpos(0,1)
+    end
+
+    def debug(args = {})
+      x = curx
+      y = cury
+      window.setpos(20, 20)
+      str = ""
+      args.each{|k,a| str << "| #{k} #{a} |"}
+      window.addstr(str)
+      window.setpos(y,x)
     end
 
     def play(stdy=nil, stdx=nil)
@@ -52,26 +68,21 @@ module Minesweeper
       window.setpos(stdy, stdx) if stdx && stdy
 
       while true
-        x = window.curx
-        y = window.cury
+        x = curx
+        y = cury
         window.keypad = true
         ch =  window.getch
         case ch
         when KEY_UP
+          move_up
         when KEY_DOWN
+          move_down
         when KEY_LEFT
-          if x <= 2
-            window.setpos(y-1,(width*3)-1)
-            next
-          end
-          if x >= width*3
-            window.setpos(y,x-2)
-          else
-            window.setpos(y,x-3)
-          end
+          move_left
         when KEY_RIGHT
+          move_right
         when 10
-          open_cell(x,y)
+          open_cell(y,x)
           play(y,x)
         end
         window.refresh
@@ -110,14 +121,14 @@ module Minesweeper
     #   exit
     # end
 
-    def open_cell(x,y)
-      x = x / 3 # original cell
+    def open_cell(y,x)
       # binding.pry
+      x = x / 3 # original cell
       cell = board[y][x]
       # surrounding_bombs = number_of_boms_nearby(x,y)
       cell.open()
-      raise GameOver if cell.bomb
-      raise GameWon  if opened_all_available_cells?
+      # raise GameOver if cell.bomb
+      # raise GameWon  if opened_all_available_cells?
     end
 
     private
@@ -131,6 +142,44 @@ module Minesweeper
         row.each_with_index do |cell, cell_index|
           cell.open(number_of_boms_nearby(cell_index,row_index))
         end
+      end
+    end
+
+    def move_up
+      x = curx
+      y = cury
+      if y >= 1
+        window.setpos(y-1,x)
+      end
+    end
+
+    def move_down
+      x = curx
+      y = cury
+      unless y+1 >= height
+        window.setpos(y+1,x)
+      end
+    end
+
+    def move_left
+      x = curx
+      y = cury
+      # not for now
+      # if x <= 2
+      #   window.setpos(y-1,(width*3)-1)
+      # end 
+      # if x >= width*3+3
+      #   window.setpos(y,x-2)
+      unless x <= 2  
+        window.setpos(y,x-3)
+      end
+    end
+
+    def move_right
+      x = curx
+      y = cury
+      unless x >= (width*3-2)
+        window.setpos(y,x+3)
       end
     end
 
