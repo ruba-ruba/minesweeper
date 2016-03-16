@@ -25,12 +25,10 @@ module Minesweeper
       # start
       begin
         init_screen
-        # start_color
+        start_color
         cbreak
         window.keypad = true
-        # window.color_set(COLOR_RED)
 
-        # window.addstr 'Check for up arrow or letter k.'
         window.refresh
         window.addch ?\n
         window.addstr("Initializing New Game \n")
@@ -44,6 +42,8 @@ module Minesweeper
         else
           window.addstr("Number of columns: ")
           x = window.getstr
+          window.addstr("Your Level (beginner/advanced/expert): ")
+          level = window.getstr
         end
 
         mine_board = Minesweeper::MineBoard.new(height: y, width: x, level: level, window: window)
@@ -52,16 +52,6 @@ module Minesweeper
       ensure
         close_screen
       end
-    end
-
-    def draw_board(window, y = 9, x = 9)
-      (0..9).each do |row|
-        (0..(x*3)).each_slice(3) do |cell|
-          window.setpos(row, cell[0])
-          window.addstr "[ ]"
-        end
-      end
-      window.refresh
     end
 
   end

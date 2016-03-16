@@ -53,11 +53,10 @@ module Minesweeper
     def play(stdy=nil, stdx=nil)
       draw_board
       window.setpos(stdy, stdx) if stdx && stdy
+      noecho
 
       while true
-        window.keypad = true
-        noecho
-        ch =  window.getch
+        ch = window.getch
         case ch
         when KEY_UP
           move_up
@@ -71,7 +70,6 @@ module Minesweeper
           open_cell(cury,curx)
           play(cury,curx)
         end
-        # window.refresh
       end
     rescue GameWon, GameOver => e
       end_game(e)
