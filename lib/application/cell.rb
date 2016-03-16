@@ -1,6 +1,9 @@
 module Minesweeper
   class Cell
+
     attr_accessor :status, :bomb, :pointer
+
+    alias_method :bomb?, :bomb
 
     def initialize(status: :initial, bomb: false)
       @status, @bomb, number = status, bomb
