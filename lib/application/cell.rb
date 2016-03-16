@@ -27,6 +27,7 @@ module Minesweeper
     end
 
     # remove zero stub
+    # rename to open! since it change status
     def open(number_of_boms_nearby = 0)
       self.status  = :opened
       self.pointer =
