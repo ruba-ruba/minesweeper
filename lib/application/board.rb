@@ -16,7 +16,7 @@ module Minesweeper
 
     extend Forwardable
 
-    def_delegators :@window, :curx, :cury  
+    def_delegators :@window, :curx, :cury
 
     attr_reader :height, :width, :level, :board, :window
 
@@ -83,11 +83,11 @@ module Minesweeper
     end
 
     def open_cell(y,x)
-      x = x / 3 # original cell, cos it takes 3 digits to render a cell
+      cell_x = x / 3 # original cell, cos it takes 3 digits to render a cell
       cell = board[y][x]
       surrounding_bombs = number_of_boms_nearby(y,x)
-      cell.open(surrounding_bombs)
-      # raise GameOver if cell.bomb
+      cell.open!(surrounding_bombs)
+      raise GameOver if cell.bomb?
       raise GameWon  if opened_all_available_cells?
     end
 
@@ -101,7 +101,7 @@ module Minesweeper
       board.each_with_index do |row, row_index|
         row.each_with_index do |cell, cell_index|
           surrounding_bombs = number_of_boms_nearby(row_index,cell_index)
-          cell.open(surrounding_bombs)
+          cell.open!(surrounding_bombs)
         end
       end
     end

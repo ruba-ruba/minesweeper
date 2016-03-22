@@ -22,7 +22,7 @@ module Minesweeper
 
     def create_game
       window = Window.new(0,0,0,0)
-      # start
+
       begin
         init_screen
         start_color
@@ -53,12 +53,8 @@ module Minesweeper
         close_screen
       end
     end
-
   end
-
 
 end
 
 Minesweeper::Application.new
-
-
