@@ -22,6 +22,8 @@ module Minesweeper
       case status
       when :initial
         "[ ]"
+      when :marked_as_bomb
+        "[b]"
       when :opened
         "[#{pointer}]"
       else
@@ -29,8 +31,16 @@ module Minesweeper
       end
     end
 
+    # user can mark / unmark cell as bomb
+    def trigger_bomb_flag!
+      if status == :marked_as_bomb
+        self.status = :initial
+      else
+        self.status = :marked_as_bomb
+      end
+    end
+
     # remove zero stub
-    # rename to open! since it change status
     def open!(number_of_boms_nearby = 0)
       self.status  = :opened
       self.pointer =
@@ -43,6 +53,10 @@ module Minesweeper
 
     def opened?
       self.status == :opened
+    end
+
+    def marked_as_bomb?
+      self.status == :marked_as_bomb
     end
   end
 end

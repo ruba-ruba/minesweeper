@@ -51,6 +51,7 @@ module Minesweeper
     end
 
     def play(stdy=nil, stdx=nil)
+      window.keypad = true
       draw_board
       window.setpos(stdy, stdx) if stdx && stdy
       noecho
@@ -68,6 +69,9 @@ module Minesweeper
           move_right
         when 10 # ENTER
           open_cell(cury,curx)
+          play(cury,curx)
+        when 'b', 'B'
+          trigger_bomb_flag(cury,curx)
           play(cury,curx)
         end
       end
@@ -87,9 +91,15 @@ module Minesweeper
       open_original(y,cell_x)
     end
 
+    def trigger_bomb_flag(y,x)
+      cell_x = x / 3 # original cell, cos it takes 3 digits to render a cell
+      cell = board[y][cell_x]
+      cell.trigger_bomb_flag! unless cell.opened?
+    end
+
     def open_original(y,x)
       cell = board[y][x]
-      return if cell.opened?
+      return if cell.opened? || cell.marked_as_bomb?
       surrounding_bombs = number_of_boms_nearby(y,x)
       cell.open!(surrounding_bombs)
       raise GameOver if cell.bomb?
@@ -111,12 +121,13 @@ module Minesweeper
     private
 
     def opened_all_available_cells?
-      board.flatten(1).select{|cell| !cell.bomb}.all?{|cell| cell.opened?}
+      board.flatten(1).select{|cell| !cell.bomb}.all?{|cell| cell.opened? || cell.marked_as_bomb?}
     end
 
     def open_all_cells
       board.each_with_index do |row, row_index|
         row.each_with_index do |cell, cell_index|
+          next unless cell.status == :initial
           surrounding_bombs = number_of_boms_nearby(row_index,cell_index)
           cell.open!(surrounding_bombs)
         end
@@ -153,10 +164,13 @@ module Minesweeper
       window.setpos(height+3, 0)
       window.addstr e.message
       window.setpos(height+5, 0)
-      window.addstr "press any key to exit | press enter to start a new game"
-      case window.getch
+      window.addstr "press any key to exit | press enter to start a new game | press `R` to replay with same parameters"
+      case x = window.getch
       when 10
         Minesweeper::Application.new
+      when 'r', 'R'
+        mine_board = Minesweeper::MineBoard.new(height: height, width: width, level: level, window: Window.new(0,0,0,0))
+        mine_board.play
       else
         window.close
       end

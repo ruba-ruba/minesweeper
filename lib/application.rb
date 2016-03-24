@@ -31,8 +31,10 @@ module Minesweeper
 
         window.refresh
         window.addch ?\n
-        window.addstr("Initializing New Game \n")
-        window.addstr("Enter game parameters. hint: (press enter to start default game) \n \n")
+        window.addstr("Initializing New Game \nEnter game parameters.")
+        window.addstr("Hint: press enter to start default game \n")
+        window.addstr("Screen Size: max row number is: #{window.maxy}; max col number is: #{window.maxx}  \n")
+        window.addstr("Keyboard: use 'b' to mark cell as bomb \n")
         window.addstr("Number of rows: ")
         y = window.getstr
         if y.empty?
@@ -45,6 +47,9 @@ module Minesweeper
           window.addstr("Your Level (beginner/advanced/expert): ")
           level = window.getstr
         end
+
+        y = window.maxy-1 if y.to_i > window.maxy
+        x = window.maxx-1 if x.to_i > window.maxx
 
         mine_board = Minesweeper::MineBoard.new(height: y, width: x, level: level, window: window)
         mine_board.play
