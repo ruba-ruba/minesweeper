@@ -25,11 +25,18 @@ module Minesweeper
 
       begin
         init_screen
-        start_color
+        Curses.start_color
+        Curses.init_pair(COLOR_RED,     COLOR_RED,     COLOR_BLACK)
+        Curses.init_pair(COLOR_BLUE,    COLOR_BLUE,    COLOR_BLACK)
+        Curses.init_pair(COLOR_CYAN,    COLOR_CYAN,    COLOR_BLACK)
+        Curses.init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK)
+
         cbreak
         window.keypad = true
 
+
         window.refresh
+
         window.addch ?\n
         window.addstr("Initializing New Game \nEnter game parameters.")
         window.addstr("Hint: press enter to start default game \n")

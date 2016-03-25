@@ -35,7 +35,9 @@ module Minesweeper
         (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index| # dummy staff
           cell = board[row_index][index]
           window.setpos(row_index, cell_ary[0])
-          window.addstr cell.draw
+          window.attron(color_pair(COLOR_BLUE)){ window.addstr '[' }
+          cell.draw(window)
+          window.attron(color_pair(COLOR_BLUE)){ window.addstr ']' }
         end
       end
       window.refresh
@@ -127,7 +129,7 @@ module Minesweeper
     def open_all_cells
       board.each_with_index do |row, row_index|
         row.each_with_index do |cell, cell_index|
-          next unless cell.status == :initial
+          next unless cell.bomb?
           surrounding_bombs = number_of_boms_nearby(row_index,cell_index)
           cell.open!(surrounding_bombs)
         end

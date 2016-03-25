@@ -18,14 +18,15 @@ module Minesweeper
       end
     end
 
-    def draw
+    def draw(window)
       case status
       when :initial
-        "[ ]"
+        window.addstr(" ")
       when :marked_as_bomb
-        "[b]"
+        window.attron(color_pair(COLOR_MAGENTA)){ window.addstr 'b' }
       when :opened
-        "[#{pointer}]"
+        color = bomb? ? COLOR_RED : COLOR_CYAN
+        window.attron(color_pair(color)){ window.addstr "#{pointer}" }
       else
         raise NotImplementedError
       end
