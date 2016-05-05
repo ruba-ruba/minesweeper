@@ -45,19 +45,17 @@ module Minesweeper
     def open!(number_of_boms_nearby = 0)
       self.status  = :opened
       self.pointer =
-        if bomb
+        if bomb?
           "*"
         else
           number_of_boms_nearby
         end
     end
 
-    def opened?
-      self.status == :opened
-    end
-
-    def marked_as_bomb?
-      self.status == :marked_as_bomb
+    %i(initial marked_as_bomb opened).each do |method|
+      define_method("#{method}?") do
+        self.status == method
+      end
     end
   end
 end

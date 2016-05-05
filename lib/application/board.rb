@@ -169,6 +169,7 @@ module Minesweeper
       window.addstr "press any key to exit | press enter to start a new game | press `R` to replay with same parameters"
       case x = window.getch
       when 10
+        echo
         Minesweeper::Application.new
       when 'r', 'R'
         mine_board = Minesweeper::MineBoard.new(height: height, width: width, level: level, window: Window.new(0,0,0,0))
