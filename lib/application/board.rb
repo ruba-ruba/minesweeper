@@ -166,17 +166,17 @@ module Minesweeper
       window.setpos(height+3, 0)
       window.addstr e.message
       window.setpos(height+5, 0)
-      window.addstr "press any key to exit | press enter to start a new game | press `R` to replay with same parameters"
+      window.addstr "press `R` to replay with same parameters | press enter to start a new game | press any key to exit"
       case x = window.getch
       when 10
         echo
         Minesweeper::Application.new
       when 'r', 'R'
-        mine_board = Minesweeper::MineBoard.new(height: height, width: width, level: level, window: Window.new(0,0,0,0))
-        mine_board.play
+        Minesweeper::MineBoard.new(height: height, width: width, level: level, window: Window.new(0,0,0,0)).play
       else
         window.close
       end
+      at_exit { puts "cruel world" }
     end
 
     protected

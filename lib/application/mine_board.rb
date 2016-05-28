@@ -1,5 +1,6 @@
 module Minesweeper
   class MineBoard < Board
+
     def fill_board
       super
       add_bombs
