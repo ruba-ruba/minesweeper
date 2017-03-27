@@ -3,7 +3,7 @@ module Minesweeper
 
     attr_accessor :status, :bomb, :pointer
 
-    alias_method :bomb?, :bomb
+    alias bomb? bomb
 
     def initialize(status: :initial, bomb: false)
       @status, @bomb = status, bomb
@@ -11,7 +11,7 @@ module Minesweeper
     end
 
     def make_it_bomb
-      if bomb
+      if bomb?
         false
       else
         self.bomb = true
@@ -21,7 +21,7 @@ module Minesweeper
     def draw(window)
       case status
       when :initial
-        window.addstr(" ")
+        window.addstr(' ')
       when :marked_as_bomb
         window.attron(color_pair(COLOR_MAGENTA)) { window.addstr 'b' }
       when :opened
@@ -47,7 +47,7 @@ module Minesweeper
       self.status  = :opened
       self.pointer =
         if bomb?
-          "*"
+          '*'
         else
           number_of_boms_nearby
         end
@@ -55,7 +55,7 @@ module Minesweeper
 
     %i(initial marked_as_bomb opened).each do |method|
       define_method("#{method}?") do
-        self.status == method
+        status == method
       end
     end
   end

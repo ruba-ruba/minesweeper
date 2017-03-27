@@ -21,9 +21,9 @@ module Minesweeper
     attr_reader :height, :width, :level, :board, :window
 
     def initialize(height: 9, width: 9, level: :beginner, window: nil)
-      @height = height.to_i || 9
-      @width  = width.to_i  || 9
-      @level  = level       || :beginner
+      @height = height.to_i
+      @width  = width.to_i
+      @level  = level
       @board  = []
       @window = window
       fill_board
@@ -54,7 +54,7 @@ module Minesweeper
           move_right
         when ENTER
           open_cell(cury, curx)
-          play(cury,curx)
+          play(cury, curx)
         when 'b', 'B'
           trigger_bomb_flag(cury, curx)
           play(cury, curx)
@@ -70,7 +70,7 @@ module Minesweeper
     def draw_board
       window.clear
       board.each_index do |row_index|
-        (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index| # dummy staff
+        (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index| # weird
           cell = board[row_index][index]
           window.setpos(row_index, cell_ary[0])
           window.attron(color_pair(COLOR_BLUE)) { window.addstr '[' }
@@ -79,29 +79,29 @@ module Minesweeper
         end
       end
       window.refresh
-      window.setpos(0,1)
+      window.setpos(0, 1)
     end
 
     def debug(args = {})
       window.setpos(20, 20)
-      str = ""
-      args.each{|k,a| str << "| #{k} #{a} |"}
+      str = ''
+      args.each { |k, a| str << "| #{k} #{a} |" }
       window.addstr(str)
-      window.setpos(cury,curx)
+      window.setpos(cury, curx)
     end
 
-    def open_cell(y,x)
+    def open_cell(y, x)
       cell_x = x / 3 # original cell, cos it takes 3 digits to render a cell
       open_original(y,cell_x)
     end
 
-    def trigger_bomb_flag(y,x)
+    def trigger_bomb_flag(y, x)
       cell_x = x / 3 # original cell, cos it takes 3 digits to render a cell
       cell = board[y][cell_x]
       cell.trigger_bomb_flag! unless cell.opened?
     end
 
-    def open_original(y,x)
+    def open_original(y, x)
       cell = board[y][x]
       return if cell.opened? || cell.marked_as_bomb?
       surrounding_bombs = number_of_boms_nearby(y,x)
@@ -111,7 +111,7 @@ module Minesweeper
       open_zero_cells(y,x) if surrounding_bombs == 0
     end
 
-    def open_zero_cells(y,x)
+    def open_zero_cells(y, x)
       # open left
       open_original(y,x-1) if x > 0
       # open right
@@ -125,14 +125,14 @@ module Minesweeper
     private
 
     def opened_all_available_cells?
-      board.flatten(1).select{|cell| !cell.bomb}.all?{|cell| cell.opened? || cell.marked_as_bomb?}
+      board.flatten(1).select { |cell| !cell.bomb }.all? { |cell| cell.opened? || cell.marked_as_bomb? }
     end
 
     def open_all_cells
       board.each_with_index do |row, row_index|
         row.each_with_index do |cell, cell_index|
           next unless cell.bomb?
-          surrounding_bombs = number_of_boms_nearby(row_index,cell_index)
+          surrounding_bombs = number_of_boms_nearby(row_index, cell_index)
           cell.open!(surrounding_bombs)
         end
       end
@@ -169,7 +169,7 @@ module Minesweeper
       window.addstr e.message
       window.setpos(height+5, 0)
       window.addstr "press `R` to replay with same parameters | press enter to start a new game | press any key to exit"
-      case x = window.getch
+      case window.getch
       when 10
         echo
         Minesweeper::Application.new
@@ -196,22 +196,22 @@ module Minesweeper
         elsif working_cell == row.last
           row[-2..-2]
         else
-          [ row[x-1], row[x+1] ]
+          [row[x-1], row[x+1]]
         end
       cells.count(&:bomb?)
     end
 
-    def top_row_bombs(y,x)
+    def top_row_bombs(y, x)
       return 0 if y < 1
       row = board[y-1]
       bombs_around_in_row(row, x)
     end
 
-    def bottom_row_bombs( y, x)
+    def bottom_row_bombs(y, x)
       return 0 if y >= height-1 # normalized height
       row = board[y+1]
-      bombs_around_in_row(row,  x)
-     end
+      bombs_around_in_row(row, x)
+    end
 
     def bombs_around_in_row(row, x)
       working_cell = row[x]
