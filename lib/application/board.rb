@@ -58,7 +58,7 @@ module Minesweeper
       window.setpos(stdy, stdx) if stdx && stdy
       noecho
 
-      while true
+      loop do
         ch = window.getch
         case ch
         when KEY_UP
