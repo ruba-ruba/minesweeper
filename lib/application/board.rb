@@ -125,7 +125,10 @@ module Minesweeper
     private
 
     def opened_all_available_cells?
-      board.flatten(1).select { |cell| !cell.bomb }.all? { |cell| cell.opened? || cell.marked_as_bomb? }
+      board.
+        flatten(1).
+        reject(&:bomb?).
+        all? { |cell| cell.opened? || cell.marked_as_bomb? }
     end
 
     def open_all_cells
@@ -174,11 +177,9 @@ module Minesweeper
         echo
         Minesweeper::Application.new
       when 'r', 'R'
-        Minesweeper::MineBoard.new(height: height, width: width, level: level, window: Window.new(0,0,0,0)).play
-      else
-        window.close
+        window = Window.new(0, 0, 0, 0)
+        Minesweeper::MineBoard.new(height: height, width: width, level: level, window: window).play
       end
-      at_exit { puts "good bye" }
     end
 
     protected

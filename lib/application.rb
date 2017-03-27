@@ -86,6 +86,7 @@ module Minesweeper
       Minesweeper::MineBoard.new(height: y, width: x, level: level, window: window).play
     ensure
       close_screen
+      at_exit { puts "good bye" }
     end
   end
 end
