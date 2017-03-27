@@ -1,6 +1,6 @@
 require 'pry'
 require 'curses'
-include  Curses
+include Curses
 
 require_relative 'application/board'
 require_relative 'application/mine_board'
@@ -16,14 +16,14 @@ module Minesweeper
   end
 
   class CommandReader
-    attr_reader :window
-
-    def initialize(window = Window.new(0,0,0,0))
+    def initialize
       @commands = ARGV.first
-      @window   = window
+      @window   = Window.new(0, 0, 0, 0)
     end
 
     private
+
+    attr_reader :window
 
     def ask_x
       window.addstr("Number of columns: ")
@@ -52,41 +52,42 @@ module Minesweeper
       window.addstr("Start game with default parameters? (Y/N)  \n")
       window.setpos(4,42)
       str = window.getstr
-      if str.downcase == 'y'
+      if str.casecmp('y').zero?
         [10, 10, 'advanced']
       else
         ask_for_board_options
       end
     end
 
+    def init_colors
+      Curses.start_color
+      Curses.init_pair(COLOR_RED,     COLOR_RED,     COLOR_BLACK)
+      Curses.init_pair(COLOR_BLUE,    COLOR_BLUE,    COLOR_BLACK)
+      Curses.init_pair(COLOR_CYAN,    COLOR_CYAN,    COLOR_BLACK)
+      Curses.init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK)
+    end
+
     public
 
     def create_game
-      begin
-        init_screen
-        Curses.start_color
-        Curses.init_pair(COLOR_RED,     COLOR_RED,     COLOR_BLACK)
-        Curses.init_pair(COLOR_BLUE,    COLOR_BLUE,    COLOR_BLACK)
-        Curses.init_pair(COLOR_CYAN,    COLOR_CYAN,    COLOR_BLACK)
-        Curses.init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK)
+      init_screen
+      init_colors
 
-        cbreak
-        window.keypad = true
+      cbreak
+      window.keypad = true
 
-        window.refresh
+      window.refresh
 
-        window.addch ?\n
-        window.addstr("Initializing New Game \n")
-        window.addstr("Screen Size: max row number is: #{window.maxy}; max col number is: #{window.maxx}  \n")
-        window.addstr("Keyboard: use 'b' to mark/unmark cell as bomb \n")
-        y,x,level = prepare_board_options
-        Minesweeper::MineBoard.new(height: y, width: x, level: level, window: window).play
-      ensure
-        close_screen
-      end
+      window.addch ?\n
+      window.addstr("Initializing New Game \n")
+      window.addstr("Screen Size: max row number is: #{window.maxy}; max col number is: #{window.maxx}  \n")
+      window.addstr("Keyboard: use 'b' to mark/unmark cell as bomb \n")
+      y, x, level = prepare_board_options
+      Minesweeper::MineBoard.new(height: y, width: x, level: level, window: window).play
+    ensure
+      close_screen
     end
   end
-
 end
 
 Minesweeper::Application.new

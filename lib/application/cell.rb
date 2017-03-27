@@ -6,7 +6,7 @@ module Minesweeper
     alias_method :bomb?, :bomb
 
     def initialize(status: :initial, bomb: false)
-      @status, @bomb, number = status, bomb
+      @status, @bomb = status, bomb
       @pointer = nil
     end
 
@@ -23,10 +23,10 @@ module Minesweeper
       when :initial
         window.addstr(" ")
       when :marked_as_bomb
-        window.attron(color_pair(COLOR_MAGENTA)){ window.addstr 'b' }
+        window.attron(color_pair(COLOR_MAGENTA)) { window.addstr 'b' }
       when :opened
         color = bomb? ? COLOR_RED : COLOR_CYAN
-        window.attron(color_pair(color)){ window.addstr "#{pointer}" }
+        window.attron(color_pair(color)) { window.addstr "#{pointer}" }
       else
         raise NotImplementedError
       end
@@ -34,11 +34,12 @@ module Minesweeper
 
     # user can mark / unmark cell as bomb
     def trigger_bomb_flag!
-      if status == :marked_as_bomb
-        self.status = :initial
-      else
-        self.status = :marked_as_bomb
-      end
+      self.status =
+        if status == :marked_as_bomb
+          :initial
+        else
+          :marked_as_bomb
+        end
     end
 
     # remove zero stub

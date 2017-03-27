@@ -1,5 +1,4 @@
 module Minesweeper
-
   class GameOver < StandardError
     def message
       "You Lost"
@@ -13,43 +12,27 @@ module Minesweeper
   end
 
   class Board
-
     extend Forwardable
+    
+    ENTER = 10
 
     def_delegators :@window, :curx, :cury
 
     attr_reader :height, :width, :level, :board, :window
 
     def initialize(height: 9, width: 9, level: :beginner, window: nil)
-      @height = (height.to_i) || 9
-      @width  = (width.to_i)  || 9
-      @level  = level         || :beginner
+      @height = height.to_i || 9
+      @width  = width.to_i  || 9
+      @level  = level       || :beginner
       @board  = []
       @window = window
       fill_board
     end
 
-    def draw_board
-      window.clear
-      board.each_index do |row_index|
-        (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index| # dummy staff
-          cell = board[row_index][index]
-          window.setpos(row_index, cell_ary[0])
-          window.attron(color_pair(COLOR_BLUE)){ window.addstr '[' }
-          cell.draw(window)
-          window.attron(color_pair(COLOR_BLUE)){ window.addstr ']' }
-        end
+    def fill_board
+      height.times do
+        board << Array.new(width) { Cell.new }
       end
-      window.refresh
-      window.setpos(0,1)
-    end
-
-    def debug(args = {})
-      window.setpos(20, 20)
-      str = ""
-      args.each{|k,a| str << "| #{k} #{a} |"}
-      window.addstr(str)
-      window.setpos(cury,curx)
     end
 
     def play(stdy=nil, stdx=nil)
@@ -69,12 +52,12 @@ module Minesweeper
           move_left
         when KEY_RIGHT
           move_right
-        when 10 # ENTER
-          open_cell(cury,curx)
+        when ENTER
+          open_cell(cury, curx)
           play(cury,curx)
         when 'b', 'B'
-          trigger_bomb_flag(cury,curx)
-          play(cury,curx)
+          trigger_bomb_flag(cury, curx)
+          play(cury, curx)
         end
       end
     rescue GameWon, GameOver => e
@@ -82,10 +65,29 @@ module Minesweeper
       exit
     end
 
-    def fill_board
-      height.times do
-        board << Array.new(width) { Cell.new }
+    private 
+
+    def draw_board
+      window.clear
+      board.each_index do |row_index|
+        (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index| # dummy staff
+          cell = board[row_index][index]
+          window.setpos(row_index, cell_ary[0])
+          window.attron(color_pair(COLOR_BLUE)) { window.addstr '[' }
+          cell.draw(window)
+          window.attron(color_pair(COLOR_BLUE)) { window.addstr ']' }
+        end
       end
+      window.refresh
+      window.setpos(0,1)
+    end
+
+    def debug(args = {})
+      window.setpos(20, 20)
+      str = ""
+      args.each{|k,a| str << "| #{k} #{a} |"}
+      window.addstr(str)
+      window.setpos(cury,curx)
     end
 
     def open_cell(y,x)
@@ -176,16 +178,16 @@ module Minesweeper
       else
         window.close
       end
-      at_exit { puts "cruel world" }
+      at_exit { puts "good bye" }
     end
 
     protected
 
-    def number_of_boms_nearby(y,x)
-      bombs_around(y,x) + top_row_bombs(y,x) + bottom_row_bombs(y,x)
+    def number_of_boms_nearby(y, x)
+      bombs_around(y,x) + top_row_bombs(y, x) + bottom_row_bombs(y, x)
     end
 
-    def bombs_around(y,x)
+    def bombs_around(y, x)
       row = board[y]
       working_cell = row[x]
       cells =
@@ -205,11 +207,11 @@ module Minesweeper
       bombs_around_in_row(row, x)
     end
 
-    def bottom_row_bombs(y,x)
+    def bottom_row_bombs( y, x)
       return 0 if y >= height-1 # normalized height
       row = board[y+1]
-      bombs_around_in_row(row, x)
-    end
+      bombs_around_in_row(row,  x)
+     end
 
     def bombs_around_in_row(row, x)
       working_cell = row[x]
