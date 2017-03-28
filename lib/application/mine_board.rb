@@ -28,7 +28,7 @@ module Minesweeper
     def add_bombs(number = number_of_bombs)
       if number > 0
         cell = board[random_row][random_cell]
-        cell.make_it_bomb && number -= 1
+        cell.make_it_bomb! && number -= 1
         add_bombs(number)
       end
     end

@@ -10,12 +10,9 @@ module Minesweeper
       @pointer = nil
     end
 
-    def make_it_bomb
-      if bomb?
-        false
-      else
-        self.bomb = true
-      end
+    def make_it_bomb!
+      return false if bomb?
+      self.bomb = true
     end
 
     def draw(window)
