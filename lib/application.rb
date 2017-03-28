@@ -48,7 +48,7 @@ module Minesweeper
       [ask_y, ask_x, ask_level]
     end
 
-    def prepare_board_options
+    def board_options
       window.addstr("Start game with default parameters? (Y/N)  \n")
       window.setpos(4,42)
       str = window.getstr
@@ -82,11 +82,11 @@ module Minesweeper
       window.addstr("Initializing New Game \n")
       window.addstr("Screen Size: max row number is: #{window.maxy}; max col number is: #{window.maxx}  \n")
       window.addstr("Keyboard: use 'b' to mark/unmark cell as bomb \n")
-      y, x, level = prepare_board_options
+      y, x, level = board_options
       Minesweeper::MineBoard.new(height: y, width: x, level: level, window: window).play
     ensure
       close_screen
-      at_exit { puts "good bye" }
+      at_exit { puts 'good bye' }
     end
   end
 end
