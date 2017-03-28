@@ -3,7 +3,7 @@ require 'curses'
 include Curses
 
 require_relative 'application/board'
-require_relative 'application/mine_board'
+require_relative 'application/bomb_injector'
 require_relative 'application/cell'
 
 module Minesweeper
@@ -11,14 +11,13 @@ module Minesweeper
 
   class Application
     def initialize
-      CommandReader.new.create_game
+      CommandReader.new.create_new_game
     end
   end
 
   class CommandReader
     def initialize
-      @commands = ARGV.first
-      @window   = Window.new(0, 0, 0, 0)
+      @window  = Window.new(0, 0, 0, 0)
     end
 
     private
@@ -69,7 +68,7 @@ module Minesweeper
 
     public
 
-    def create_game
+    def create_new_game
       init_screen
       init_colors
 
@@ -83,7 +82,8 @@ module Minesweeper
       window.addstr("Recomended screen size: rows: #{window.maxy}; columns: #{window.maxx} \n")
       window.addstr("hint: use `b` to mark/unmark cell as bomb \n")
       y, x, level = board_options
-      Minesweeper::MineBoard.new(height: y, width: x, level: level, window: window).play
+      board = Minesweeper::Board.new(height: y, width: x, level: level, window: window)
+      board.play
     ensure
       close_screen
       at_exit { puts 'good bye' }

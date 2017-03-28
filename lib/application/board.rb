@@ -18,22 +18,27 @@ module Minesweeper
 
     def_delegators :@window, :curx, :cury
 
-    attr_reader :height, :width, :level, :board, :window
+    attr_reader :height, :width, :level, :board, :window, :bomb_injector
 
-    def initialize(height: 9, width: 9, level: :beginner, window: nil)
+    def initialize(height: , width: , level: , window:)
       @height = height.to_i
       @width  = width.to_i
       @level  = level
       @board  = []
       @window = window
+      @bomb_injector = BombInjector.new(level: level)
       fill_board
+    end
+
+    def inject_bombs
+      bomb_injector.inject(self)
     end
 
     def fill_board
       height.times do
         board << Array.new(width) { Cell.new }
       end
-      self
+      inject_bombs
     end
 
     def play(stdy=nil, stdx=nil)
@@ -181,7 +186,7 @@ module Minesweeper
         Minesweeper::Application.new
       when 'r', 'R'
         window = Window.new(0, 0, 0, 0)
-        Minesweeper::MineBoard.new(height: height, width: width, level: level, window: window).play
+        Minesweeper::Board.new(height: height, width: width, level: level, window: window).play
       end
     end
 
@@ -228,6 +233,13 @@ module Minesweeper
           row[x-1..x+1]
         end
       cells.count(&:bomb?)
+    end
+
+    public
+
+    # stats
+    def bombs
+      board.flatten.select(&:bomb?)
     end
 
     def number_of_cells

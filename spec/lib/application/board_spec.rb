@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Minesweeper::Board do
-  let(:board) { Minesweeper::Board.new(height: 2, width: 3, level: :expert) }
+RSpec.describe Minesweeper::Board do
+  let(:board) { Minesweeper::Board.new(height: 2, width: 3, level: :expert, window: nil) }
 
   context "#fill_board" do
     subject(:fill_board) { board }

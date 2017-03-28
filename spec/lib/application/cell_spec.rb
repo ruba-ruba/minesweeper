@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Minesweeper::Cell do
+RSpec.describe Minesweeper::Cell do
   let(:cell) { described_class.new }
 
   describe "#toggle_bomb_flag!" do
