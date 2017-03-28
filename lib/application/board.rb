@@ -170,7 +170,11 @@ module Minesweeper
       window.setpos(height+3, 0)
       window.addstr e.message
       window.setpos(height+5, 0)
-      window.addstr "press `R` to replay with same parameters | press enter to start a new game | press any key to exit"
+      window.addstr <<-STR
+- `R` to replay with same parameters
+- `Enter` to start a new game
+- any other key to exit
+      STR
       case window.getch
       when 10
         echo
