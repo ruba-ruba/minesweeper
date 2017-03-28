@@ -1,18 +1,10 @@
 require 'spec_helper'
 
 describe Minesweeper::Board do
-  let(:board) {Minesweeper::Board.new(height: 2, width: 3, level: :expert)}
-
-  it 'take height width and level' do
-    expect(Minesweeper::Board.method(:new).arity).to eq -1
-    board = Minesweeper::Board.new(height: 4, width: 2, level: :expert)
-    expect(board.height).to eq 4
-    expect(board.width).to eq 2
-    expect(board.level).to eq :expert
-  end
+  let(:board) { Minesweeper::Board.new(height: 2, width: 3, level: :expert) }
 
   context "#fill_board" do
-    subject(:fill_board) { board.fill_board }
+    subject(:fill_board) { board }
 
     it 'return Board instance' do
       expect(fill_board).to be_a Minesweeper::Board

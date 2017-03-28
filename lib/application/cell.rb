@@ -6,7 +6,8 @@ module Minesweeper
     alias bomb? bomb
 
     def initialize(status: :initial, bomb: false)
-      @status, @bomb = status, bomb
+      @status = status
+      @bomb = bomb
       @pointer = nil
     end
 
@@ -23,10 +24,9 @@ module Minesweeper
       when :initial
         window.addstr(' ')
       when :marked_as_bomb
-        window.attron(color_pair(COLOR_MAGENTA)) { window.addstr 'b' }
+        window.attron(color_pair(color)) { window.addstr 'b' }
       when :opened
-        color = bomb? ? COLOR_RED : COLOR_CYAN
-        window.attron(color_pair(color)) { window.addstr "#{pointer}" }
+        window.attron(color_pair(color)) { window.addstr pointer.to_s }
       else
         raise NotImplementedError
       end
@@ -56,6 +56,17 @@ module Minesweeper
     %i(initial marked_as_bomb opened).each do |method|
       define_method("#{method}?") do
         status == method
+      end
+    end
+
+    private
+
+    def color
+      case status
+      when :marked_as_bomb
+        COLOR_MAGENTA
+      when :opened
+        bomb? ? COLOR_RED : COLOR_CYAN
       end
     end
   end

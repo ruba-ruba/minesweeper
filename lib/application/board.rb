@@ -33,6 +33,7 @@ module Minesweeper
       height.times do
         board << Array.new(width) { Cell.new }
       end
+      self
     end
 
     def play(stdy=nil, stdx=nil)
