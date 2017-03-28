@@ -80,8 +80,8 @@ module Minesweeper
 
       window.addch ?\n
       window.addstr("Initializing New Game \n")
-      window.addstr("Screen Size: max row number is: #{window.maxy}; max col number is: #{window.maxx}  \n")
-      window.addstr("Keyboard: use 'b' to mark/unmark cell as bomb \n")
+      window.addstr("Recomended screen size: rows: #{window.maxy}; columns: #{window.maxx} \n")
+      window.addstr("hint: use `b` to mark/unmark cell as bomb \n")
       y, x, level = board_options
       Minesweeper::MineBoard.new(height: y, width: x, level: level, window: window).play
     ensure
