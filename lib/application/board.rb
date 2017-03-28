@@ -93,7 +93,7 @@ module Minesweeper
 
     def open_cell(y, x)
       cell_x = x / 3 # original cell, cos it takes 3 digits to render a cell
-      open_original(y,cell_x)
+      open_original(y, cell_x)
     end
 
     def trigger_bomb_flag(y, x)
@@ -105,25 +105,23 @@ module Minesweeper
     def open_original(y, x)
       cell = board[y][x]
       return if cell.opened? || cell.marked_as_bomb?
-      surrounding_bombs = number_of_boms_nearby(y,x)
+      surrounding_bombs = number_of_boms_nearby(y, x)
       cell.open!(surrounding_bombs)
       raise GameOver if cell.bomb?
       raise GameWon  if opened_all_available_cells?
-      open_zero_cells(y,x) if surrounding_bombs == 0
+      open_zero_cells(y, x) if surrounding_bombs == 0
     end
 
     def open_zero_cells(y, x)
       # open left
-      open_original(y,x-1) if x > 0
+      open_original(y, x-1) if x > 0
       # open right
-      open_original(y,x+1) if x < board[y].index(board[y].last)
+      open_original(y, x+1) if x < board[y].index(board[y].last)
       # open top
-      open_original(y-1,x) if y > 0
+      open_original(y-1, x) if y > 0
       # open bottom
-      open_original(y+1,x) if y < board.index(board.last)
+      open_original(y+1, x) if y < board.index(board.last)
     end
-
-    private
 
     def opened_all_available_cells?
       board.
@@ -144,25 +142,25 @@ module Minesweeper
 
     def move_up
       if cury >= 1
-        window.setpos(cury-1,curx)
+        window.setpos(cury-1, curx)
       end
     end
 
     def move_down
       unless cury+1 >= height
-        window.setpos(cury+1,curx)
+        window.setpos(cury+1, curx)
       end
     end
 
     def move_left
       unless curx <= 2
-        window.setpos(cury,curx-3)
+        window.setpos(cury, curx-3)
       end
     end
 
     def move_right
       unless curx >= (width*3-2)
-        window.setpos(cury,curx+3)
+        window.setpos(cury, curx+3)
       end
     end
 

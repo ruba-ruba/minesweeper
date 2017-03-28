@@ -1,6 +1,5 @@
 module Minesweeper
   class Cell
-
     attr_accessor :status, :bomb, :pointer
 
     alias bomb? bomb
