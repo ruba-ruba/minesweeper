@@ -31,14 +31,9 @@ module Minesweeper
       end
     end
 
-    # user can mark / unmark cell as bomb
-    def trigger_bomb_flag!
-      self.status =
-        if status == :marked_as_bomb
-          :initial
-        else
-          :marked_as_bomb
-        end
+    def toggle_bomb_flag!
+      return if opened?
+      self.status = marked_as_bomb? ? :initial : :marked_as_bomb
     end
 
     # remove zero stub

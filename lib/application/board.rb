@@ -99,7 +99,7 @@ module Minesweeper
     def trigger_bomb_flag(y, x)
       cell_x = x / 3 # original cell, cos it takes 3 digits to render a cell
       cell = board[y][cell_x]
-      cell.trigger_bomb_flag! unless cell.opened?
+      cell.toggle_bomb_flag!
     end
 
     def open_original(y, x)
