@@ -169,13 +169,14 @@ module Minesweeper
     end
 
     def end_game(e)
+      found_bombs_count = found_bombs.count
       open_all_cells
       draw_board
       window.setpos(height+3, 0)
       window.addstr e.message
       window.setpos(height+5, 0)
       window.addstr <<-STR
-Game Stats: you have found #{found_bombs.count} out of #{bombs.count} bombs
+Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
 
 - `R` to replay with same parameters
 - `Enter` to start a new game

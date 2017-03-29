@@ -14,9 +14,5 @@ RSpec.describe Minesweeper::Board do
       expect(fill_board.board.count).to eq 2
       expect(fill_board.board.flatten(1).count).to eq 2*3
     end
-
-    it 'fill all elements with Minesweeper::Cell' do
-      expect(fill_board.board.flatten(1).all?{|cell| cell.is_a?(Minesweeper::Cell)}).to be_truthy
-    end
   end
 end

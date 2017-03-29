@@ -21,22 +21,4 @@ RSpec.describe Minesweeper::Cell do
         not_to change { cell.status }
     end
   end
-
-  describe "#make_it_bomb!" do
-    it "set bomb flag on cell" do
-      expect { cell.make_it_bomb! }.to change { cell.bomb? }.from(false).to(true)
-    end
-
-    context "if alrady a bomb" do
-      before { cell.bomb = true }
-
-      it "return false" do
-        expect(cell.make_it_bomb!).to eq false
-      end
-
-      it "change nothing" do
-        expect { cell.make_it_bomb! }.not_to change { cell.bomb }
-      end
-    end
-  end
 end

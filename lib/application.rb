@@ -3,6 +3,7 @@ require 'curses'
 include Curses
 
 require_relative 'application/board'
+require_relative 'application/bomb_cell.rb'
 require_relative 'application/bomb_injector'
 require_relative 'application/cell'
 

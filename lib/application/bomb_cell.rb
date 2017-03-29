@@ -1,5 +1,5 @@
 module Minesweeper
-  class Cell
+  class BombCell
     attr_accessor :status, :pointer
 
     def initialize(status: :initial)
@@ -8,7 +8,7 @@ module Minesweeper
     end
 
     def bomb?
-      false
+      true
     end
 
     def draw(window)
@@ -24,19 +24,18 @@ module Minesweeper
       end
     end
 
+
     def toggle_bomb_flag!
-      return if opened?
       self.status = marked_as_bomb? ? :initial : :marked_as_bomb
     end
 
-    # remove zero stub
-    def open!(number_of_boms_nearby = 0)
+    def open!(_)
       return if opened?
       self.pointer =
         if marked_as_bomb?
-          'b'
+          '+'
         else
-          number_of_boms_nearby
+          '*'
         end
       self.status = :opened
     end
@@ -54,7 +53,7 @@ module Minesweeper
       when :marked_as_bomb
         COLOR_MAGENTA
       when :opened
-        COLOR_CYAN
+        COLOR_RED
       end
     end
   end
