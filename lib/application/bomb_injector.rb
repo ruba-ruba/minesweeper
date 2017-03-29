@@ -13,6 +13,14 @@ module Minesweeper
 
     private
 
+    def add_bombs(number = number_of_bombs)
+      if number > 0
+        cell = board.board[random_row][random_cell]
+        cell.make_it_bomb! && number -= 1
+        add_bombs(number)
+      end
+    end
+
     def number_of_bombs
       bomb_percent =
         case level.to_sym
@@ -25,16 +33,7 @@ module Minesweeper
         else
           raise NotImplementedError, 'unknown level'
         end
-      number = (bomb_percent * board.number_of_cells).to_i
-      number.zero? ? 1 : number
-    end
-
-    def add_bombs(number = number_of_bombs)
-      if number > 0
-        cell = board.board[random_row][random_cell]
-        cell.make_it_bomb! && number -= 1
-        add_bombs(number)
-      end
+      (bomb_percent * board.number_of_cells).ceil
     end
 
     def random_row
