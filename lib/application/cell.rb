@@ -16,7 +16,7 @@ module Minesweeper
       when :initial
         window.addstr(' ')
       when :marked_as_bomb
-        window.attron(color_pair(color)) { window.addstr 'b' }
+        window.attron(color_pair(color)) { window.addstr '*' }
       when :opened
         window.attron(color_pair(color)) { window.addstr pointer.to_s }
       else
@@ -34,7 +34,7 @@ module Minesweeper
       return if opened?
       self.pointer =
         if marked_as_bomb?
-          'b'
+          '*'
         else
           number_of_boms_nearby
         end
