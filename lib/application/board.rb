@@ -176,6 +176,8 @@ module Minesweeper
       window.addstr e.message
       window.setpos(height+5, 0)
       window.addstr <<-STR
+Game Stats: you have found #{found_bombs.count} out of #{bombs.count} bombs
+
 - `R` to replay with same parameters
 - `Enter` to start a new game
 - any other key to exit
@@ -240,6 +242,11 @@ module Minesweeper
     # stats
     def bombs
       board.flatten.select(&:bomb?)
+    end
+
+    # stats
+    def found_bombs
+      board.flatten.select(&:marked_as_bomb?).select(&:bomb?)
     end
 
     def number_of_cells
