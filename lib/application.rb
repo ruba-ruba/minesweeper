@@ -3,7 +3,8 @@ require 'curses'
 include Curses
 
 require_relative 'application/board'
-require_relative 'application/bomb_cell.rb'
+require_relative 'application/board_builder'
+require_relative 'application/bomb_cell'
 require_relative 'application/bomb_injector'
 require_relative 'application/cell'
 
@@ -83,7 +84,7 @@ module Minesweeper
       window.addstr("Recomended screen size: rows: #{window.maxy}; columns: #{window.maxx} \n")
       window.addstr("hint: use `b` to mark/unmark cell as bomb \n")
       y, x, level = board_options
-      board = Minesweeper::Board.new(height: y, width: x, level: level, window: window)
+      board = Minesweeper::BoardBuilder.new(height: y, width: x, level: level, window: window).build
       board.play
     ensure
       close_screen

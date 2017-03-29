@@ -18,27 +18,24 @@ module Minesweeper
 
     def_delegators :@window, :curx, :cury
 
-    attr_reader :height, :width, :level, :board, :window, :bomb_injector
+    attr_reader :height, :width, :board, :window, :bomb_injector
 
-    def initialize(height: , width: , level: , window:)
+    def initialize(height: , width: , bomb_injector: , window:)
       @height = height.to_i
       @width  = width.to_i
-      @level  = level
-      @board  = []
       @window = window
-      @bomb_injector = BombInjector.new(level: level)
-      fill_board
+      @bomb_injector = bomb_injector
+      @board  = []
+    end
+
+    def fill_with_cells
+      height.times do
+        board << Array.new(width) { Cell.new }
+      end
     end
 
     def inject_bombs
       bomb_injector.inject(self)
-    end
-
-    def fill_board
-      height.times do
-        board << Array.new(width) { Cell.new }
-      end
-      inject_bombs
     end
 
     def play(stdy=nil, stdx=nil)
@@ -183,16 +180,14 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
 - any other key to exit
       STR
       case window.getch
-      when 10
+      when ENTER
         echo
         Minesweeper::Application.new
       when 'r', 'R'
-        window = Window.new(0, 0, 0, 0)
-        Minesweeper::Board.new(height: height, width: width, level: level, window: window).play
+        board = Minesweeper::BoardBuilder.from_board(self).build
+        board.play
       end
     end
-
-    private
 
     def number_of_boms_nearby(y, x)
       bombs_around(y,x) + top_row_bombs(y, x) + bottom_row_bombs(y, x)
