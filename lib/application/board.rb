@@ -13,7 +13,7 @@ module Minesweeper
 
   class Board
     extend Forwardable
-    
+
     ENTER = 10
 
     def_delegators :@window, :curx, :cury
@@ -71,7 +71,7 @@ module Minesweeper
       exit
     end
 
-    private 
+    private
 
     def draw_board
       window.clear
@@ -138,7 +138,6 @@ module Minesweeper
     def open_all_cells
       board.each_with_index do |row, row_index|
         row.each_with_index do |cell, cell_index|
-          next unless cell.bomb?
           surrounding_bombs = number_of_boms_nearby(row_index, cell_index)
           cell.open!(surrounding_bombs)
         end
@@ -246,7 +245,7 @@ Game Stats: you have found #{found_bombs.count} out of #{bombs.count} bombs
 
     # stats
     def found_bombs
-      board.flatten.select(&:marked_as_bomb?).select(&:bomb?)
+      bombs.select(&:marked_as_bomb?)
     end
 
     def number_of_cells

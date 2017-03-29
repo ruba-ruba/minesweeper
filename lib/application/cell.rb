@@ -35,9 +35,13 @@ module Minesweeper
 
     # remove zero stub
     def open!(number_of_boms_nearby = 0)
+      return if opened?
+      return if bomb? && marked_as_bomb?
       self.status  = :opened
       self.pointer =
-        if bomb?
+        if bomb? && marked_as_bomb? # can not happen
+          '+'
+        elsif bomb?
           '*'
         else
           number_of_boms_nearby
