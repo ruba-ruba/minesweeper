@@ -132,7 +132,7 @@ module Minesweeper
       board.
         flatten(1).
         reject(&:bomb?).
-        all? { |cell| cell.opened? || cell.marked_as_bomb? }
+        all?(&:opened?)
     end
 
     def open_all_cells
@@ -192,7 +192,7 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
       end
     end
 
-    protected
+    private
 
     def number_of_boms_nearby(y, x)
       bombs_around(y,x) + top_row_bombs(y, x) + bottom_row_bombs(y, x)
@@ -226,15 +226,13 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
 
     def bombs_around_in_row(row, x)
       working_cell = row[x]
-      cells =
-        if working_cell == row.first
-          row[0..1]
-        elsif working_cell == row.last
-          row[-2..-1]
-        else
-          row[x-1..x+1]
-        end
-      cells.count(&:bomb?)
+      if working_cell == row.first
+        row[0..1]
+      elsif working_cell == row.last
+        row[-2..-1]
+      else
+        row[x-1..x+1]
+      end.count(&:bomb?)
     end
 
     public

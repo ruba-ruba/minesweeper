@@ -24,7 +24,6 @@ module Minesweeper
       end
     end
 
-
     def toggle_bomb_flag!
       self.status = marked_as_bomb? ? :initial : :marked_as_bomb
     end
