@@ -11,7 +11,7 @@ module Minesweeper
 
     attr_reader :height, :width, :level, :window
 
-    def initialize(height: , width: , level: , window:)
+    def initialize(height:, width:, level:, window:)
       @height = height.to_i
       @width  = width.to_i
       @level  = level

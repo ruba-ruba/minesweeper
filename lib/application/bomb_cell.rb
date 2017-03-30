@@ -29,7 +29,6 @@ module Minesweeper
     end
 
     def open!(_)
-      return if opened?
       self.pointer =
         if marked_as_bomb?
           '+'

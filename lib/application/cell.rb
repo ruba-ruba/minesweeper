@@ -31,7 +31,6 @@ module Minesweeper
 
     # remove zero stub
     def open!(number_of_boms_nearby = 0)
-      return if opened?
       self.pointer =
         if marked_as_bomb?
           '*'
