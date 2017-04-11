@@ -96,12 +96,12 @@ module Minesweeper
     end
 
     def open_cell(y, x)
-      cell_x = x / 3 # original cell, cos it takes 3 digits to render a cell
+      cell_x = x / 3 # / 3 because rendered cell 3 chars
       open_original(y, cell_x)
     end
 
     def trigger_bomb_flag(y, x)
-      cell_x = x / 3 # original cell, cos it takes 3 digits to render a cell
+      cell_x = x / 3 # / 3 because rendered cell 3 chars
       cell = board[y][cell_x]
       cell.toggle_bomb_flag!
     end
