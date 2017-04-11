@@ -15,6 +15,8 @@ module Minesweeper
     extend Forwardable
 
     ENTER = 10
+    STEP = 3
+    LEFT_RIGHT_PADDING = 2
 
     def_delegators :@window, :curx, :cury
 
@@ -38,7 +40,7 @@ module Minesweeper
       bomb_injector.inject(self)
     end
 
-    def play(stdy=nil, stdx=nil)
+    def play(stdy = nil, stdx = nil)
       window.keypad = true
       draw_board
       window.setpos(stdy, stdx) if stdx && stdy
@@ -77,7 +79,7 @@ module Minesweeper
           cell = board[row_index][index]
           window.setpos(row_index, cell_ary[0])
           window.attron(color_pair(COLOR_BLUE)) { window.addstr '[' }
-          cell.draw(window)
+          window.attron(color_pair(cell.color)) { window.addstr cell.draw }
           window.attron(color_pair(COLOR_BLUE)) { window.addstr ']' }
         end
       end
@@ -154,14 +156,14 @@ module Minesweeper
     end
 
     def move_left
-      unless curx <= 2
-        window.setpos(cury, curx-3)
+      unless curx <= LEFT_RIGHT_PADDING
+        window.setpos(cury, curx - STEP)
       end
     end
 
     def move_right
-      unless curx >= (width*3-2)
-        window.setpos(cury, curx+3)
+      unless curx >= (width*3 - LEFT_RIGHT_PADDING)
+        window.setpos(cury, curx + STEP)
       end
     end
 

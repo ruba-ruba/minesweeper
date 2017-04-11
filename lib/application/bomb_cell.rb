@@ -11,14 +11,14 @@ module Minesweeper
       true
     end
 
-    def draw(window)
+    def draw
       case status
       when :initial
-        window.addstr(' ')
+        ' '
       when :marked_as_bomb
-        window.attron(color_pair(color)) { window.addstr '*' }
+        '*'
       when :opened
-        window.attron(color_pair(color)) { window.addstr pointer.to_s }
+        pointer.to_s
       else
         raise NotImplementedError
       end
@@ -44,10 +44,10 @@ module Minesweeper
       end
     end
 
-    private
-
     def color
       case status
+      when :initial
+        COLOR_MAGENTA
       when :marked_as_bomb
         COLOR_MAGENTA
       when :opened
