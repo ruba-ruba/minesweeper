@@ -1,22 +1,4 @@
-require 'pry'
-require 'curses'
-include Curses
-
-require_relative 'application/board'
-require_relative 'application/board_builder'
-require_relative 'application/bomb_cell'
-require_relative 'application/bomb_injector'
-require_relative 'application/cell'
-
 module Minesweeper
-  require 'forwardable'
-
-  class Application
-    def initialize
-      CommandReader.new.create_new_game
-    end
-  end
-
   class CommandReader
     def initialize
       @window  = Window.new(0, 0, 0, 0)
@@ -92,5 +74,3 @@ module Minesweeper
     end
   end
 end
-
-Minesweeper::Application.new
