@@ -9,8 +9,6 @@ module Minesweeper
       )
     end
 
-    attr_reader :height, :width, :level, :window
-
     def initialize(height:, width:, level:, window:)
       @height = height.to_i
       @width  = width.to_i
@@ -25,5 +23,9 @@ module Minesweeper
       board.inject_bombs
       board
     end
+
+    private
+
+    attr_reader :height, :width, :level, :window
   end
 end
