@@ -29,8 +29,7 @@ module Minesweeper
       self.status = marked_as_bomb? ? :initial : :marked_as_bomb
     end
 
-    # remove zero stub
-    def open!(number_of_boms_nearby = 0)
+    def open!(number_of_boms_nearby)
       self.pointer =
         if marked_as_bomb?
           '*'
