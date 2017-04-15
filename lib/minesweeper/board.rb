@@ -60,7 +60,7 @@ module Minesweeper
         when ENTER
           open_cell(cury, curx)
           play(cury, curx)
-        when 'b', 'B'
+        when ' '
           trigger_bomb_flag(cury, curx)
           play(cury, curx)
         end

@@ -65,7 +65,7 @@ module Minesweeper
       window.addch ?\n
       window.addstr("Initializing New Game \n")
       window.addstr("Recomended screen size: rows: #{window.maxy}; columns: #{window.maxx} \n")
-      window.addstr("hint: use `b` to mark/unmark cell as bomb \n")
+      window.addstr("hint: use `space` to mark/unmark cell as bomb \n")
       y, x, level = board_options
       board = Minesweeper::BoardBuilder.new(height: y, width: x, level: level, window: window).build
       board.play
