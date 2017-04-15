@@ -47,6 +47,7 @@ module Minesweeper
       Curses.init_pair(COLOR_RED,     COLOR_RED,     COLOR_BLACK)
       Curses.init_pair(COLOR_BLUE,    COLOR_BLUE,    COLOR_BLACK)
       Curses.init_pair(COLOR_CYAN,    COLOR_CYAN,    COLOR_BLACK)
+      Curses.init_pair(COLOR_WHITE,   COLOR_WHITE,   COLOR_BLACK)
       Curses.init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK)
     end
 

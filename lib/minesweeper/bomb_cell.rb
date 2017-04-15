@@ -1,10 +1,11 @@
 module Minesweeper
   class BombCell
-    attr_accessor :status, :pointer
+    attr_accessor :status, :pointer, :force_color
 
     def initialize(status: :initial)
       @status = status
       @pointer = nil
+      @force_color = nil
     end
 
     def bomb?
@@ -18,23 +19,23 @@ module Minesweeper
       when :marked_as_bomb
         '*'
       when :opened
-        pointer.to_s
+        '*'
       else
         raise NotImplementedError
       end
     end
 
     def toggle_bomb_flag!
-      self.status = marked_as_bomb? ? :initial : :marked_as_bomb
+      if marked_as_bomb?
+        self.force_color = nil
+        self.status = :initial
+      else
+        self.force_color = COLOR_WHITE
+        self.status = :marked_as_bomb
+      end
     end
 
-    def open!(_)
-      self.pointer =
-        if marked_as_bomb?
-          '+'
-        else
-          '*'
-        end
+    def open!(*)
       self.status = :opened
     end
 
@@ -51,8 +52,14 @@ module Minesweeper
       when :marked_as_bomb
         COLOR_MAGENTA
       when :opened
-        COLOR_RED
+        color_when_opened
       end
+    end
+
+    private
+
+    def color_when_opened
+      force_color.nil? ? COLOR_RED : force_color
     end
   end
 end

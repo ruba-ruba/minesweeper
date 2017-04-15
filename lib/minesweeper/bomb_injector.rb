@@ -14,13 +14,15 @@ module Minesweeper
     private
 
     def add_bombs(number = number_of_bombs)
-      row_index, cell_index = random_row, random_cell
+      return if number.zero?
+      row_index = random_row 
+      cell_index = random_cell
       cell = board.board[row_index][cell_index]
       unless cell.bomb?
         board.board[row_index][cell_index] = BombCell.new
         number -= 1
       end
-      add_bombs(number) if number > 0
+      add_bombs(number)
     end
 
     def number_of_bombs

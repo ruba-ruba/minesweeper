@@ -75,7 +75,7 @@ module Minesweeper
     def draw_board
       window.clear
       board.each_index do |row_index|
-        (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index| # weird
+        (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index|
           cell = board[row_index][index]
           window.setpos(row_index, cell_ary[0])
           window.attron(color_pair(COLOR_BLUE)) { window.addstr '[' }
@@ -134,12 +134,9 @@ module Minesweeper
         all?(&:opened?)
     end
 
-    def open_all_cells
-      board.each_with_index do |row, row_index|
-        row.each_with_index do |cell, cell_index|
-          surrounding_bombs = number_of_boms_nearby(row_index, cell_index)
-          cell.open!(surrounding_bombs)
-        end
+    def reveal_bombs
+      board.flatten.select(&:bomb?).each do |bomb_cell|
+        bomb_cell.open!
       end
     end
 
@@ -169,7 +166,7 @@ module Minesweeper
 
     def end_game(e)
       found_bombs_count = found_bombs.count
-      open_all_cells
+      reveal_bombs
       draw_board
       window.setpos(height+3, 0)
       window.addstr e.message
