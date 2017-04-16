@@ -104,6 +104,7 @@ module Minesweeper
       cell_x = x / 3 # / 3 because rendered cell 3 chars
       cell = board[y][cell_x]
       cell.toggle_bomb_flag!
+      raise GameWon if game_won?
     end
 
     def open_original(y, x)
@@ -112,7 +113,7 @@ module Minesweeper
       surrounding_bombs = number_of_boms_nearby(y, x)
       cell.open!(surrounding_bombs)
       raise GameOver if cell.bomb?
-      raise GameWon  if opened_all_available_cells?
+      raise GameWon  if game_won?
       open_zero_cells(y, x) if surrounding_bombs == 0
     end
 
@@ -127,11 +128,9 @@ module Minesweeper
       open_original(y+1, x) if y < board.index(board.last)
     end
 
-    def opened_all_available_cells?
-      board.
-        flatten(1).
-        reject(&:bomb?).
-        all?(&:opened?)
+    def game_won?
+      cells.all?(&:opened?) &&
+        bombs.all?(&:marked_as_bomb?)
     end
 
     def reveal_bombs
@@ -195,15 +194,13 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
     def bombs_around(y, x)
       row = board[y]
       working_cell = row[x]
-      cells =
-        if working_cell == row.first
-          row[1..1]
-        elsif working_cell == row.last
-          row[-2..-2]
-        else
-          [row[x-1], row[x+1]]
-        end
-      cells.count(&:bomb?)
+      if working_cell == row.first
+        row[1..1]
+      elsif working_cell == row.last
+        row[-2..-2]
+      else
+        [row[x-1], row[x+1]]
+      end.count(&:bomb?)
     end
 
     def top_row_bombs(y, x)
@@ -229,11 +226,15 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
       end.count(&:bomb?)
     end
 
+    def cells
+      board.flatten(1).reject(&:bomb?)
+    end
+
     public
 
     # stats
     def bombs
-      board.flatten.select(&:bomb?)
+      board.flatten(1).select(&:bomb?)
     end
 
     # stats
