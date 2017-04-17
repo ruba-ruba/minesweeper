@@ -6,17 +6,13 @@ require 'forwardable'
 
 require_relative 'minesweeper/board'
 require_relative 'minesweeper/board_builder'
+require_relative 'minesweeper/board_params'
 require_relative 'minesweeper/bomb_cell'
 require_relative 'minesweeper/bomb_injector'
 require_relative 'minesweeper/cell'
-require_relative 'minesweeper/command_reader'
+require_relative 'minesweeper/game_initializer'
 
 module Minesweeper
-  class Application
-    def initialize
-      CommandReader.new.create_new_game
-    end
-  end
 end
 
-Minesweeper::Application.new
+Minesweeper::GameInitializer.new.start

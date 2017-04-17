@@ -1,5 +1,6 @@
 module Minesweeper
   class BoardBuilder
+    # replay
     def self.from_board(board)
       new(
         height: board.height,
