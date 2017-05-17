@@ -14,5 +14,3 @@ require_relative 'minesweeper/game_initializer'
 
 module Minesweeper
 end
-
-Minesweeper::GameInitializer.new.start

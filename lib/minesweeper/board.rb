@@ -235,10 +235,10 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
       board.flatten(1).select(&:bomb?)
     end
 
-    # stats
     def found_bombs
       bombs.select(&:marked_as_bomb?)
     end
+    # stats
 
     def number_of_cells
       height * width

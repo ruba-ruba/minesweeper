@@ -20,8 +20,6 @@ module Minesweeper
         '*'
       when :opened
         '*'
-      else
-        raise NotImplementedError
       end
     end
 

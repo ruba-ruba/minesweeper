@@ -9,7 +9,7 @@ module Minesweeper
     end
 
     def board_params
-      window.addstr("Start game with default parameters? (Y/N)  \n")
+      window.addstr('Start game with default parameters? (Y/N)')
       window.setpos(4,42)
       str = window.getstr
       if str.casecmp('y').zero?
@@ -21,23 +21,22 @@ module Minesweeper
 
     private
 
-
     def ask_x
-      window.addstr("Number of columns: ")
+      window.addstr('Number of columns: ')
       x = window.getstr
       x = window.maxx-1 if x.to_i > window.maxx
       x
     end
 
     def ask_y
-      window.addstr("Number of rows: ")
+      window.addstr('Number of rows: ')
       y = window.getstr
       y = window.maxy-1 if y.to_i > window.maxy
       y
     end
 
     def ask_level
-      window.addstr("Your Level (beginner/advanced/expert): ")
+      window.addstr('Your Level (beginner/advanced/expert): ')
       window.getstr
     end
   end

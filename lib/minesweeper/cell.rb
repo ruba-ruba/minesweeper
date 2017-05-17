@@ -19,8 +19,6 @@ module Minesweeper
         '*'
       when :opened
         pointer.to_s
-      else
-        raise NotImplementedError
       end
     end
 
