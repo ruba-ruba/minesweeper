@@ -9,4 +9,9 @@ require_relative "../lib/minesweeper/bomb_injector"
 require_relative "../lib/minesweeper/cell"
 
 RSpec.configure do |config|
+  if ENV['COVERAGE'] == true
+    SimpleCov.start do
+      
+    end
+  end
 end

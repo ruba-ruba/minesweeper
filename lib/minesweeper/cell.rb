@@ -30,12 +30,7 @@ module Minesweeper
     end
 
     def open!(number_of_boms_nearby)
-      self.pointer =
-        if marked_as_bomb?
-          '*'
-        else
-          number_of_boms_nearby
-        end
+      self.pointer = number_of_boms_nearby
       self.status = :opened
     end
 

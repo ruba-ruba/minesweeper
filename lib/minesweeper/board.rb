@@ -134,9 +134,7 @@ module Minesweeper
     end
 
     def reveal_bombs
-      board.flatten.select(&:bomb?).each do |bomb_cell|
-        bomb_cell.open!
-      end
+      bombs.each(&:open!)
     end
 
     def move_up
