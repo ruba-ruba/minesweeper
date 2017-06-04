@@ -32,7 +32,7 @@ module Minesweeper
       self.status = :opened
     end
 
-    %i(initial marked_as_bomb opened).each do |method|
+    %i[initial marked_as_bomb opened].each do |method|
       define_method("#{method}?") do
         status == method
       end

@@ -17,9 +17,9 @@ module Minesweeper
       return if number.zero?
       row_index = random_row
       cell_index = random_cell
-      cell = board.board[row_index][cell_index]
+      cell = board.cells[row_index][cell_index]
       unless cell.bomb?
-        board.board[row_index][cell_index] = BombCell.new
+        board.cells[row_index][cell_index] = BombCell.new
         number -= 1
       end
       add_bombs(number)
@@ -34,8 +34,6 @@ module Minesweeper
           0.15
         when :expert
           0.25
-        else
-          raise NotImplementedError, 'unknown level'
         end
       (bomb_percent * board.number_of_cells).ceil
     end

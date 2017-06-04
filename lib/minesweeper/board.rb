@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Minesweeper
   class GameOver < StandardError
     def message
@@ -17,27 +19,17 @@ module Minesweeper
     ENTER = 10
     STEP = 3
     LEFT_RIGHT_PADDING = 2
+    SPACE = ' '
 
     def_delegators :@window, :curx, :cury
 
-    attr_reader :height, :width, :board, :window, :bomb_injector
+    attr_reader :height, :width, :cells, :window
 
-    def initialize(height:, width:, bomb_injector:, window:)
-      @height = height.to_i
-      @width  = width.to_i
+    def initialize(height:, width:, window:)
+      @height = height
+      @width  = width
       @window = window
-      @bomb_injector = bomb_injector
-      @board  = []
-    end
-
-    def fill_with_cells
-      height.times do
-        board << Array.new(width) { Cell.new }
-      end
-    end
-
-    def inject_bombs
-      bomb_injector.inject(self)
+      @cells  = []
     end
 
     def play(stdy = nil, stdx = nil)
@@ -60,7 +52,7 @@ module Minesweeper
         when ENTER
           open_cell(cury, curx)
           play(cury, curx)
-        when ' '
+        when SPACE
           trigger_bomb_flag(cury, curx)
           play(cury, curx)
         end
@@ -74,9 +66,9 @@ module Minesweeper
 
     def draw_board
       window.clear
-      board.each_index do |row_index|
-        (0..(width*3-1)).each_slice(3).with_index do |cell_ary, index|
-          cell = board[row_index][index]
+      cells.each_index do |row_index|
+        (0..(width * 3 - 1)).each_slice(3).with_index do |cell_ary, index|
+          cell = cells[row_index][index]
           window.setpos(row_index, cell_ary[0])
           window.attron(color_pair(COLOR_BLUE)) { window.addstr '[' }
           window.attron(color_pair(cell.color)) { window.addstr cell.draw }
@@ -102,34 +94,34 @@ module Minesweeper
 
     def trigger_bomb_flag(y, x)
       cell_x = x / 3 # / 3 because rendered cell 3 chars
-      cell = board[y][cell_x]
+      cell = cells[y][cell_x]
       cell.toggle_bomb_flag!
       raise GameWon if game_won?
     end
 
     def open_original(y, x)
-      cell = board[y][x]
+      cell = cells[y][x]
       return if cell.opened? || cell.marked_as_bomb?
       surrounding_bombs = number_of_boms_nearby(y, x)
       cell.open!(surrounding_bombs)
       raise GameOver if cell.bomb?
       raise GameWon  if game_won?
-      open_zero_cells(y, x) if surrounding_bombs == 0
+      open_zero_cells(y, x) if surrounding_bombs.zero?
     end
 
     def open_zero_cells(y, x)
       # open left
-      open_original(y, x-1) if x > 0
+      open_original(y, x - 1) if x.positive?
       # open right
-      open_original(y, x+1) if x < board[y].index(board[y].last)
+      open_original(y, x + 1) if x < cells[y].index(cells[y].last)
       # open top
-      open_original(y-1, x) if y > 0
+      open_original(y - 1, x) if y.positive?
       # open bottom
-      open_original(y+1, x) if y < board.index(board.last)
+      open_original(y + 1, x) if y < cells.index(cells.last)
     end
 
     def game_won?
-      cells.all?(&:opened?) &&
+      not_bombs.all?(&:opened?) &&
         bombs.all?(&:marked_as_bomb?)
     end
 
@@ -138,36 +130,32 @@ module Minesweeper
     end
 
     def move_up
-      if cury >= 1
-        window.setpos(cury-1, curx)
-      end
+      return if cury.zero?
+      window.setpos(cury - 1, curx)
     end
 
     def move_down
-      unless cury+1 >= height
-        window.setpos(cury+1, curx)
-      end
+      return if cury + 1 >= height
+      window.setpos(cury + 1, curx)
     end
 
     def move_left
-      unless curx <= LEFT_RIGHT_PADDING
-        window.setpos(cury, curx - STEP)
-      end
+      return if curx <= LEFT_RIGHT_PADDING
+      window.setpos(cury, curx - STEP)
     end
 
     def move_right
-      unless curx >= (width*3 - LEFT_RIGHT_PADDING)
-        window.setpos(cury, curx + STEP)
-      end
+      return if curx >= (width * 3 - LEFT_RIGHT_PADDING)
+      window.setpos(cury, curx + STEP)
     end
 
     def end_game(e)
       found_bombs_count = found_bombs.count
       reveal_bombs
       draw_board
-      window.setpos(height+3, 0)
+      window.setpos(height + 3, 0)
       window.addstr e.message
-      window.setpos(height+5, 0)
+      window.setpos(height + 5, 0)
       window.addstr <<-STR
 Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
 
@@ -178,38 +166,37 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
       case window.getch
       when ENTER
         echo
-        Minesweeper::Application.new
+        Minesweeper::GameInitializer.new.start
       when 'r', 'R'
-        board = Minesweeper::BoardBuilder.from_board(self).build
-        board.play
+        Minesweeper::BoardBuilder.from_board(self).build.play
       end
     end
 
     def number_of_boms_nearby(y, x)
-      bombs_around(y,x) + top_row_bombs(y, x) + bottom_row_bombs(y, x)
+      bombs_around(y, x) + top_row_bombs(y, x) + bottom_row_bombs(y, x)
     end
 
     def bombs_around(y, x)
-      row = board[y]
+      row = cells[y]
       working_cell = row[x]
       if working_cell == row.first
         row[1..1]
       elsif working_cell == row.last
         row[-2..-2]
       else
-        [row[x-1], row[x+1]]
+        [row[x - 1], row[x + 1]]
       end.count(&:bomb?)
     end
 
     def top_row_bombs(y, x)
       return 0 if y < 1
-      row = board[y-1]
+      row = cells[y - 1]
       bombs_around_in_row(row, x)
     end
 
     def bottom_row_bombs(y, x)
-      return 0 if y >= height-1 # normalized height
-      row = board[y+1]
+      return 0 if y >= height - 1 # normalized height
+      row = cells[y + 1]
       bombs_around_in_row(row, x)
     end
 
@@ -220,19 +207,19 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
       elsif working_cell == row.last
         row[-2..-1]
       else
-        row[x-1..x+1]
+        row[x - 1..x + 1]
       end.count(&:bomb?)
     end
 
-    def cells
-      board.flatten(1).reject(&:bomb?)
+    def not_bombs
+      cells.flatten(1).reject(&:bomb?)
     end
 
     public
 
     # stats
     def bombs
-      board.flatten(1).select(&:bomb?)
+      cells.flatten(1).select(&:bomb?)
     end
 
     def found_bombs

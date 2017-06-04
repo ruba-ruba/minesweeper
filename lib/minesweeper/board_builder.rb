@@ -1,32 +1,38 @@
 module Minesweeper
   class BoardBuilder
-    # replay
+    extend Forwardable
+
     def self.from_board(board)
-      new(
-        height: board.height,
-        width:  board.width,
-        level:  board.bomb_injector.level,
-        window: Window.new(0, 0, 0, 0)
-      )
+      new(board.window, flush_params: false)
     end
 
-    def initialize(height:, width:, level:, window:)
-      @height = height.to_i
-      @width  = width.to_i
-      @level  = level
+    def initialize(window, flush_params:)
       @window = window
+      @params_builder = Minesweeper::BoardParams.new(window, flush_params)
+      @bomb_injector = BombInjector.new(level: level)
     end
 
     def build
-      bomb_injector = BombInjector.new(level: level)
-      board = Minesweeper::Board.new(height: height, width: width, bomb_injector: bomb_injector, window: window)
-      board.fill_with_cells
-      board.inject_bombs
+      board = Minesweeper::Board.new(height: height, width: width, window: window)
+      fill_with_cells(board)
+      inject_bombs(board)
       board
     end
 
     private
 
-    attr_reader :height, :width, :level, :window
+    attr_reader :window, :bomb_injector, :params_builder
+
+    def_delegators :params_builder, :height, :width, :level
+
+    def fill_with_cells(board)
+      height.times do
+        board.cells << Array.new(width) { Cell.new }
+      end
+    end
+
+    def inject_bombs(board)
+      bomb_injector.inject(board)
+    end
   end
 end

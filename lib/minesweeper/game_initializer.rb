@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Minesweeper
   class GameInitializer
     def initialize
@@ -7,18 +9,14 @@ module Minesweeper
     def start
       init_screen
       init_colors
-
       cbreak
       window.keypad = true
-
       window.refresh
-
-      window.addch ?\n
-      window.addstr("Initializing New Game \n")
-      window.addstr("Recomended screen size: rows: #{window.maxy}; columns: #{window.maxx} \n")
-      window.addstr("hint: use `space` to mark/unmark cell as bomb \n")
-      y, x, level = Minesweeper::BoardParams.new(window).board_params
-      board = Minesweeper::BoardBuilder.new(height: y, width: x, level: level, window: window).build
+      window.addch("\n")
+      window.addstr("Welcome to Minesweeper \n")
+      window.addstr("screen size: rows: #{window.maxy}; columns: #{window.maxx} \n")
+      window.addstr("controls: `space` to mark/unmark cell as bomb, `arrow keys` to navigate \n")
+      board = Minesweeper::BoardBuilder.new(window, flush_params: true).build
       board.play
     ensure
       close_screen

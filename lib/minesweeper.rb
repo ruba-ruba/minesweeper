@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'curses'
 include Curses
 
 require 'pry'
 require 'forwardable'
-
+require 'sequel'
 require_relative 'minesweeper/board'
 require_relative 'minesweeper/board_builder'
 require_relative 'minesweeper/board_params'

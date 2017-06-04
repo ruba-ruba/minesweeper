@@ -4,15 +4,16 @@ RSpec.describe Minesweeper::BombInjector do
   let(:height) { 10 }
   let(:width)  { 10 }
   let(:board) do
-    Minesweeper::Board.new(
+    board = Minesweeper::Board.new(
       height: height,
       width: width,
-      bomb_injector: nil,
       window: nil
     )
+    height.times do
+      board.cells << Array.new(width) { Minesweeper::Cell.new }
+    end
+    board
   end
-
-  before { board.fill_with_cells }
 
   let(:bomb_injector) do
     described_class.new(level: :expert)
