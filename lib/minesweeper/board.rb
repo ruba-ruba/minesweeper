@@ -1,13 +1,13 @@
 module Minesweeper
   class GameOver < StandardError
     def message
-      "You Lost"
+      'You Lost'
     end
   end
 
   class GameWon < StandardError
     def message
-      "You Won"
+      'You Won'
     end
   end
 
@@ -22,7 +22,7 @@ module Minesweeper
 
     attr_reader :height, :width, :board, :window, :bomb_injector
 
-    def initialize(height: , width: , bomb_injector: , window:)
+    def initialize(height:, width:, bomb_injector:, window:)
       @height = height.to_i
       @width  = width.to_i
       @window = window

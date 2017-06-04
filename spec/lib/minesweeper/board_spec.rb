@@ -5,7 +5,7 @@ RSpec.describe Minesweeper::Board do
     Minesweeper::Board.new(height: 2, width: 3, bomb_injector: Minesweeper::BombInjector.new(level: :expert), window: nil)
   end
 
-  context "#fill_board" do
+  context '#fill_board' do
     it 'create 2 rows each with 3 cells' do
       board.fill_with_cells
       expect(board.board.count).to eq 2

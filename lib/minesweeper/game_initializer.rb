@@ -2,7 +2,7 @@ module Minesweeper
   class GameInitializer
     def initialize
       @window = Window.new(0, 0, 0, 0)
-    end    
+    end
 
     def start
       init_screen

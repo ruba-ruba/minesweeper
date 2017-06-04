@@ -15,7 +15,7 @@ module Minesweeper
 
     def add_bombs(number = number_of_bombs)
       return if number.zero?
-      row_index = random_row 
+      row_index = random_row
       cell_index = random_cell
       cell = board.board[row_index][cell_index]
       unless cell.bomb?
