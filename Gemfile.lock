@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    minesweeper (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -7,10 +12,12 @@ GEM
     docile (1.1.5)
     json (1.8.6)
     method_source (0.8.2)
+    minitest (5.10.2)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    rake (10.5.0)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -37,8 +44,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (~> 1.14)
   curses (~> 1.0.2)
+  minesweeper!
+  minitest (~> 5.0)
   pry
+  rake (~> 10.0)
   rspec (~> 3.5.0)
   sequel
   simplecov (~> 0.11.2)
