@@ -9,11 +9,13 @@
 
 #### Setup
 
+  - N/A
+
+#### Local installation
+
   - `git clone git@github.com:ruba-ruba/minesweeper.git`
   - `cd minesweeper`
-  - `gem install bundler`
-  - `bundle`
-  - `bin/minesweeper`
+  - `rake build_and_install`
 
 #### Controls
 
