@@ -9,13 +9,17 @@
 
 #### Setup
 
-  - N/A
+  - `gem install minesweeper-curses`
 
 #### Local installation
 
   - `git clone git@github.com:ruba-ruba/minesweeper.git`
   - `cd minesweeper`
   - `rake build_and_install`
+
+#### Launching
+
+  - minesweeper-curses
 
 #### Controls
 

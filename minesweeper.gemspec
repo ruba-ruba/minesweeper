@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
   spec.bindir        = 'bin'
-  spec.executables   = ['minesweeper']
+  spec.executables   = ['minesweeper-curses']
   spec.require_paths = ['lib']
 
   spec.add_development_dependency 'bundler',  '~> 1.14'
