@@ -1,16 +1,5 @@
 module Minesweeper
   class BoardParams
-
-    # how about more sophisticated solution
-    DB = Sequel.sqlite
-    DB.execute <<-SQL
-      CREATE TABLE IF NOT EXISTS board_params (
-        height integer,
-        width integer,
-        level varchar(255)
-      );
-    SQL
-
     DEFAULTS = { height: 10, width: 10, level: 'advanced' }.freeze
 
     attr_reader :window, :flush_params
@@ -22,34 +11,26 @@ module Minesweeper
     end
 
     def height
-      read[:height]
+      storage.read[:height]
     end
 
     def width
-      read[:width]
+      storage.read[:width]
     end
 
     def level
-      read[:level]
-    end
-
-    def prepare
-      flush_storage if flush_params
-      read || build
+      storage.read[:level]
     end
 
     private
 
-    def table
-      DB[:board_params]
+    def prepare
+      storage.flush if flush_params
+      storage.read || build
     end
 
-    def read
-      table.first
-    end
-
-    def flush_storage
-      DB[:board_params].delete
+    def storage
+      ::Minesweeper::Storage.instance
     end
 
     def build
@@ -57,11 +38,11 @@ module Minesweeper
       window.setpos(4, 42)
       str = window.getstr
       if str.casecmp('y').zero?
-        table.insert(DEFAULTS)
+        storage.insert(DEFAULTS)
       else
-        table.insert(height: ask_y, width: ask_x, level: ask_level)
+        storage.insert(height: ask_y, width: ask_x, level: ask_level)
       end
-      read
+      storage.read
     end
 
     def ask_x

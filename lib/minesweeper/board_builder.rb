@@ -2,10 +2,6 @@ module Minesweeper
   class BoardBuilder
     extend Forwardable
 
-    def self.from_board(board)
-      new(board.window, flush_params: false)
-    end
-
     def initialize(window, flush_params:)
       @window = window
       @params_builder = Minesweeper::BoardParams.new(window, flush_params)

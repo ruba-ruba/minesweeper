@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake',     '~> 10.0'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'curses',   '~> 1.0.2'
-  spec.add_development_dependency 'sequel'
-  spec.add_development_dependency 'sqlite3'
+  spec.add_development_dependency 'sequel',   '~> 4.46.0'
+  spec.add_development_dependency 'sqlite3',  '~> 1.3.13'
   spec.add_development_dependency 'rspec',    '~> 3.6.0'
 end

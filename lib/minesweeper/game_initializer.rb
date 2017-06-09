@@ -16,8 +16,11 @@ module Minesweeper
       window.addstr("Welcome to Minesweeper \n")
       window.addstr("screen size: rows: #{window.maxy}; columns: #{window.maxx} \n")
       window.addstr("controls: `space` to mark/unmark cell as bomb, `arrow keys` to navigate \n")
-      board = Minesweeper::BoardBuilder.new(window, flush_params: true).build
-      board.play
+      Minesweeper::BoardBuilder
+        .new(window, flush_params: true)
+        .build
+        .play
+    rescue SystemExit, Interrupt
     ensure
       close_screen
       at_exit { puts 'good bye' }

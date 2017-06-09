@@ -53,7 +53,7 @@ module Minesweeper
           open_cell(cury, curx)
           play(cury, curx)
         when SPACE
-          trigger_bomb_flag(cury, curx)
+          toggle_bomb_flag(cury, curx)
           play(cury, curx)
         end
       end
@@ -79,20 +79,12 @@ module Minesweeper
       window.setpos(0, 1)
     end
 
-    def debug(args = {})
-      window.setpos(20, 20)
-      str = ''
-      args.each { |k, a| str << "| #{k} #{a} |" }
-      window.addstr(str)
-      window.setpos(cury, curx)
-    end
-
     def open_cell(y, x)
       cell_x = x / 3 # / 3 because rendered cell 3 chars
       open_original(y, cell_x)
     end
 
-    def trigger_bomb_flag(y, x)
+    def toggle_bomb_flag(y, x)
       cell_x = x / 3 # / 3 because rendered cell 3 chars
       cell = cells[y][cell_x]
       cell.toggle_bomb_flag!
@@ -168,7 +160,7 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
         echo
         Minesweeper::GameInitializer.new.start
       when 'r', 'R'
-        Minesweeper::BoardBuilder.from_board(self).build.play
+        Minesweeper::BoardBuilder.new(window, flush_params: false).build.play
       end
     end
 
