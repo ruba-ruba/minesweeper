@@ -6,3 +6,4 @@ gemspec
 
 gem 'pry'
 gem 'simplecov', '~> 0.11.2'
+gem 'coveralls', require: false
