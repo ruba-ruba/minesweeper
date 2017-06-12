@@ -13,6 +13,10 @@ module Minesweeper
       );
     SQL
 
+    def [](key)
+      read[key]
+    end
+
     def read
       table.first
     end

@@ -11,15 +11,15 @@ module Minesweeper
     end
 
     def height
-      storage.read[:height]
+      storage[:height]
     end
 
     def width
-      storage.read[:width]
+      storage[:width]
     end
 
     def level
-      storage.read[:level]
+      storage[:level]
     end
 
     private
