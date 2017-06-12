@@ -7,7 +7,6 @@ module Minesweeper
     def initialize(window, flush_params)
       @window = window
       @flush_params = flush_params
-      prepare
     end
 
     def height
@@ -22,12 +21,12 @@ module Minesweeper
       storage[:level]
     end
 
-    private
-
     def prepare
       storage.flush if flush_params
       storage.read || build
     end
+
+    private
 
     def storage
       ::Minesweeper::Storage.instance

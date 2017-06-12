@@ -1,17 +1,14 @@
 module Minesweeper
   class BombInjector
-    attr_reader :board, :level
-
-    def initialize(level:)
-      @level = level
-    end
-
-    def inject(board)
+    def inject(board, level)
       @board = board
+      @level = level
       add_bombs
     end
 
     private
+
+    attr_reader :board, :level
 
     def add_bombs(number = number_of_bombs)
       return if number.zero?
@@ -26,16 +23,15 @@ module Minesweeper
     end
 
     def number_of_bombs
-      bomb_percent =
-        case level.to_sym
-        when :beginner
-          0.05
-        when :advanced
-          0.15
-        when :expert
-          0.25
-        end
       (bomb_percent * board.number_of_cells).ceil
+    end
+
+    def bomb_percent
+      case level.to_sym
+      when :beginner then 0.05
+      when :advanced then 0.15
+      when :expert   then 0.25
+      end
     end
 
     def random_row
