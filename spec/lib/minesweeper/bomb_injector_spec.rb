@@ -16,20 +16,33 @@ RSpec.describe Minesweeper::BombInjector do
   end
 
   let(:bomb_injector) do
-    described_class.new(level: :expert)
+    described_class.new
   end
 
-  it 'spread bombs around board' do
-    bomb_injector.inject(board)
-    expect(board.bombs.count).to eq 25
+  context 'level' do
+    it 'spread bombs around board' do
+      bomb_injector.inject(board, :expert)
+      expect(board.bombs.count).to eq 25
+    end
+
+    it 'spread bombs around board' do
+      bomb_injector.inject(board, :advanced)
+      expect(board.bombs.count).to eq 15
+    end
+
+    it 'spread bombs around board' do
+      bomb_injector.inject(board, :beginner)
+      expect(board.bombs.count).to eq 5
+    end
   end
+
 
   describe 'number of bombs' do
     let(:height) { 1 }
     let(:width)  { 1 }
 
     it 'return at least 1 bomb' do
-      bomb_injector.inject(board)
+      bomb_injector.inject(board, :expert)
       expect(board.bombs.count).to eq 1
     end
   end

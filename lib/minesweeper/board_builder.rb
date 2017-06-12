@@ -8,7 +8,7 @@ module Minesweeper
     end
 
     def build
-      prepare_board_params
+      params_builder.prepare
       board = create_board
       fill_with_cells(board)
       inject_bombs(board)
@@ -23,10 +23,6 @@ module Minesweeper
 
     def create_board
       Minesweeper::Board.new(height: height, width: width, window: window)
-    end
-
-    def prepare_board_params
-      params_builder.prepare
     end
 
     def fill_with_cells(board)
@@ -44,7 +40,7 @@ module Minesweeper
     end
 
     def params_builder
-      @params_builder ||= Minesweeper::BoardParams.new(window, flush_params)
+      @params_builder ||= Minesweeper::ParamsBuilder.new(window, flush_params)
     end
   end
 end
