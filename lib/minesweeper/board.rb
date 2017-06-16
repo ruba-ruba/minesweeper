@@ -71,7 +71,7 @@ module Minesweeper
           cell = cells[row_index][index]
           window.setpos(row_index, cell_ary[0])
           window.attron(color_pair(COLOR_BLUE)) { window.addstr '[' }
-          window.attron(color_pair(cell.color)) { window.addstr cell.draw }
+          window.attron(color_pair(cell.color)) { window.addstr cell.view }
           window.attron(color_pair(COLOR_BLUE)) { window.addstr ']' }
         end
       end

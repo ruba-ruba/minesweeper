@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Minesweeper
   Sequel::Model.db = Sequel.sqlite
   Sequel::Model.strict_param_setting = false
