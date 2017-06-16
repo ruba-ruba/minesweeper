@@ -160,7 +160,7 @@ Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
         echo
         Minesweeper::GameInitializer.new.start
       when 'r', 'R'
-        Minesweeper::BoardBuilder.new(window, flush_params: false).build.play
+        Minesweeper::GameInitializer.new.restart
       end
     end
 

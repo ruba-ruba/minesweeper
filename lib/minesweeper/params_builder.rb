@@ -27,16 +27,17 @@ module Minesweeper
       window.addstr('Start game with default parameters? (Y/N)')
       window.setpos(pos, 42)
       str = window.getstr
-      instance =
+      params =
         if str.casecmp('y').zero?
-          ::Minesweeper::BoardParams.new(DEFAULTS)
+          DEFAULTS
         else
-          ::Minesweeper::BoardParams.new(height: ask_y, width: ask_x, level: ask_level)
+          { height: ask_y, width: ask_x, level: ask_level }
         end
-      validate(instance)
+      board_params = ::Minesweeper::BoardParams.new(params)
+      validate_and_save(board_params)
     end
 
-    def validate(instance)
+    def validate_and_save(instance)
       if instance.valid?
         instance.save
         instance
