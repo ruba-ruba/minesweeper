@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Minesweeper
+  # used for reading / creating board params.
   class ParamsBuilder
     extend Forwardable
     DEFAULTS = { height: 10, width: 10, level: 'advanced' }.freeze
@@ -23,9 +26,9 @@ module Minesweeper
       ::Minesweeper::BoardParams.first
     end
 
-    def build(pos = 4)
+    def build(y_position = 4)
       window.addstr('Start game with default parameters? (Y/N)')
-      window.setpos(pos, 42)
+      window.setpos(y_position, 42)
       str = window.getstr
       params =
         if str.casecmp('y').zero?

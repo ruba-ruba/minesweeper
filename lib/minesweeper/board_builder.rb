@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module Minesweeper
+  # create empty instance of board
+  # fill it with cells & bomb cells
+  # return assembled instance of board
   class BoardBuilder
     extend Forwardable
 

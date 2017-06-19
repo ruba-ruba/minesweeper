@@ -1,18 +1,6 @@
 # frozen_string_literal: true
 
 module Minesweeper
-  class GameOver < StandardError
-    def message
-      'You Lost'
-    end
-  end
-
-  class GameWon < StandardError
-    def message
-      'You Won'
-    end
-  end
-
   class Board
     extend Forwardable
 
@@ -148,13 +136,19 @@ module Minesweeper
       window.setpos(height + 3, 0)
       window.addstr e.message
       window.setpos(height + 5, 0)
-      window.addstr <<-STR
-Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
+      window.addstr <<~STR
+        Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
 
-- `R` to replay with same parameters
-- `Enter` to start a new game
-- any other key to exit
+        - `R` to replay with same parameters
+        - `Enter` to start a new game
+        - any other key to exit
       STR
+      start_or_restart_game
+    end
+
+    # used when user won/lose game & decided to begin anew
+    # eventually will be moved to game initializer
+    def start_or_restart_game
       case window.getch
       when ENTER
         echo

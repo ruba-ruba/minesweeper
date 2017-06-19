@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Minesweeper
   class Cell < BaseCell
     def bomb?

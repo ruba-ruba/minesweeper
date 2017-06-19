@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Minesweeper
   class BombInjector
     def inject(board, level)

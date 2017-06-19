@@ -2,7 +2,6 @@
 
 module Minesweeper
   class CellState
-
     attr_accessor :color, :view, :status
 
     def initialize(color:, status:, view:)

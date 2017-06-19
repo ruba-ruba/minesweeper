@@ -29,7 +29,7 @@ module Minesweeper
       end
     end
 
-    def open!(number_of_boms_nearby)
+    def open!(*)
       raise NotImplementedError, 'defined in subclass'
     end
 
