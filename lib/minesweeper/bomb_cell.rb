@@ -8,7 +8,7 @@ module Minesweeper
 
     def open!(*)
       state.view = '*'
-      state.color = state.marked_as_bomb? ? COLOR_WHITE : COLOR_RED
+      state.color = marked_as_bomb? ? COLOR_WHITE : COLOR_RED
       state.status = :opened
     end
   end

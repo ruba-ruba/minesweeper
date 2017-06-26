@@ -18,7 +18,7 @@ module Minesweeper
 
     def toggle_bomb_flag!
       return if opened?
-      if state.marked_as_bomb?
+      if marked_as_bomb?
         state.view = ' '
         state.color = COLOR_MAGENTA
         state.status = :initial
