@@ -215,7 +215,7 @@ module Minesweeper
     end
 
     def number_of_cells
-      height * width
+      cells.flatten.count
     end
   end
 end
