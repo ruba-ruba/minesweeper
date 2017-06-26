@@ -10,12 +10,12 @@ module Minesweeper
     SPACE = ' '
 
     def_delegators :@window, :curx, :cury
+    def_delegators :board_params, :height, :width
 
-    attr_reader :height, :width, :cells, :window
+    attr_reader :board_params, :cells, :window
 
-    def initialize(height:, width:, window:)
-      @height = height
-      @width  = width
+    def initialize(board_params:, window:)
+      @board_params = board_params
       @window = window
       @cells  = []
     end
@@ -39,11 +39,10 @@ module Minesweeper
           move_right
         when ENTER
           open_cell
-          play(cury, curx)
         when SPACE
           toggle_bomb_flag
-          play(cury, curx)
         end
+        play(cury, curx)
       end
     rescue GameWon, GameOver => e
       end_game(e)

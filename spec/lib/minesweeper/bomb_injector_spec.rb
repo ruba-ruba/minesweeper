@@ -3,10 +3,13 @@ require 'spec_helper'
 RSpec.describe Minesweeper::BombInjector do
   let(:height) { 10 }
   let(:width)  { 10 }
+  let(:board_params) do
+    Minesweeper::BoardParams.new(height: height, width: width, level: 'expert')
+  end
+
   let(:board) do
     board = Minesweeper::Board.new(
-      height: height,
-      width: width,
+      board_params: board_params,
       window: nil
     )
     height.times do

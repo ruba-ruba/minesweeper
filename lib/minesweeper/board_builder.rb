@@ -13,30 +13,30 @@ module Minesweeper
     end
 
     def build
-      params_builder.prepare
-      board = create_board
-      fill_with_cells(board)
-      inject_bombs(board)
+      @board_params = params_builder.prepare
+      @board = create_board
+      fill_with_cells
+      inject_bombs
       board
     end
 
     private
 
-    attr_reader :window, :flush_params
+    attr_reader :window, :flush_params, :board_params, :board
 
-    def_delegators :params_builder, :height, :width, :level
+    def_delegators :board_params, :height, :width, :level
 
     def create_board
-      Minesweeper::Board.new(height: height, width: width, window: window)
+      Minesweeper::Board.new(board_params: board_params, window: window)
     end
 
-    def fill_with_cells(board)
+    def fill_with_cells
       height.times do
         board.cells << Array.new(width) { Cell.new }
       end
     end
 
-    def inject_bombs(board)
+    def inject_bombs
       bomb_injector.inject(board, level)
     end
 
@@ -45,7 +45,7 @@ module Minesweeper
     end
 
     def params_builder
-      @params_builder ||= Minesweeper::ParamsBuilder.new(window, flush_params)
+      Minesweeper::ParamsBuilder.new(window, flush_params)
     end
   end
 end

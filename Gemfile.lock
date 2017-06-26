@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    minesweeper-curses (0.2.1)
+    minesweeper-curses (0.3.0)
 
 GEM
   remote: https://rubygems.org/
