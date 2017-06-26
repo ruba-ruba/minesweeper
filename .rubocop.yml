@@ -1,3 +1,16 @@
+AllCops:
+  Includes:
+    - Rakefile
+    - config.ru
+  Excludes:
+    - db/**
+    - config/**
+    - script/**
+    - minesweeper.gemspec
+
+Documentation:
+  Enabled: false
+
 Metrics/LineLength:
   Max: 120
   # To make it possible to copy or click on URIs in the code, we allow lines
