@@ -36,7 +36,6 @@ RSpec.describe Minesweeper::BombInjector do
     end
   end
 
-
   describe 'number of bombs' do
     let(:height) { 1 }
     let(:width)  { 1 }

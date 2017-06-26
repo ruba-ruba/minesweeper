@@ -14,7 +14,7 @@ RSpec.describe Minesweeper::ParamsBuilder do
 
       it 'set default params' do
         board_params = subject.prepare
-        %i(height width level).each do |param|
+        %i[height width level].each do |param|
           expect(board_params.send(param)).to eq described_class::DEFAULTS.fetch(param)
         end
       end

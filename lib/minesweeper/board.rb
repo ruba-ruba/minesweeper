@@ -38,10 +38,10 @@ module Minesweeper
         when KEY_RIGHT
           move_right
         when ENTER
-          open_cell(cury, curx)
+          open_cell
           play(cury, curx)
         when SPACE
-          toggle_bomb_flag(cury, curx)
+          toggle_bomb_flag
           play(cury, curx)
         end
       end
@@ -67,14 +67,14 @@ module Minesweeper
       window.setpos(0, 1)
     end
 
-    def open_cell(y, x)
-      cell_x = x / 3 # / 3 because rendered cell 3 chars
-      open_original(y, cell_x)
+    def open_cell
+      cell_x = curx / STEP
+      open_original(cury, cell_x)
     end
 
-    def toggle_bomb_flag(y, x)
-      cell_x = x / 3 # / 3 because rendered cell 3 chars
-      cell = cells[y][cell_x]
+    def toggle_bomb_flag
+      cell_x = curx / STEP
+      cell = cells[cury][cell_x]
       cell.toggle_bomb_flag!
       raise GameWon if game_won?
     end
