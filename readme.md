@@ -6,7 +6,7 @@
 
 #### Requirements
 
-  - ruby 2.4.1
+  - ruby 2.4.1 or higher
 
 #### Setup
 
@@ -20,13 +20,13 @@
 
 #### Launching
 
-  - minesweeper-curses
+  - `minesweeper-curses`
 
 #### Controls
 
-  - use arrow keys to move over the mineboard
-  - use space to mark cell as a bomb
-  - use enter to open the cell
+  - ←↑→↓ to move over the mineboard
+  - ␣    to mark cell as a bomb
+  - ↵    to open the cell
 
 #### License
 
