@@ -4,6 +4,7 @@ module Minesweeper
   # used for reading / creating board params.
   class ParamsBuilder
     extend Forwardable
+
     DEFAULTS = { height: 10, width: 10, level: 'advanced' }.freeze
 
     attr_reader :window, :flush_params
@@ -56,15 +57,14 @@ module Minesweeper
     def ask_x
       window.addstr('Number of columns: ')
       x = window.getstr
-      x = window.maxx - 1 if x.to_i > window.maxx
-      x
+      max_x = window.maxx / Minesweeper::Board::STEP
+      x.to_i > max_x ? max_x : x
     end
 
     def ask_y
       window.addstr('Number of rows: ')
       y = window.getstr
-      y = window.maxy - 1 if y.to_i > window.maxy
-      y
+      y.to_i > window.maxy ? window.maxy - 1 : y
     end
 
     def ask_level

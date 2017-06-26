@@ -152,9 +152,9 @@ module Minesweeper
       case window.getch
       when ENTER
         echo
-        Minesweeper::GameInitializer.new.start
+        game_initializer.start
       when 'r', 'R'
-        Minesweeper::GameInitializer.new.restart
+        game_initializer.restart
       end
     end
 
@@ -199,6 +199,10 @@ module Minesweeper
 
     def not_bombs
       cells.flatten(1).reject(&:bomb?)
+    end
+
+    def game_initializer
+      @game_initializer ||= Minesweeper::GameInitializer.new
     end
 
     public

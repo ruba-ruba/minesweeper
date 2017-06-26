@@ -14,7 +14,7 @@ module Minesweeper
       window.refresh
       window.addch("\n")
       window.addstr("Welcome to Minesweeper \n")
-      window.addstr("screen size: rows: #{window.maxy}; columns: #{window.maxx} \n")
+      window.addstr("screen size: rows: #{window.maxy}; columns: #{window.maxx / Minesweeper::Board::STEP} \n")
       window.addstr("controls: `space` to mark/unmark cell as bomb, `arrow keys` to navigate \n")
       play
     rescue SystemExit, Interrupt
