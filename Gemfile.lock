@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    minesweeper-curses (0.3.1)
+    minesweeper-curses (0.3.2)
+      curses (~> 1.0.2)
 
 GEM
   remote: https://rubygems.org/
@@ -18,7 +19,6 @@ GEM
     docile (1.1.5)
     json (1.8.6)
     method_source (0.8.2)
-    minitest (5.10.2)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -56,9 +56,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.14)
   coveralls
-  curses (~> 1.0.2)
   minesweeper-curses!
-  minitest (~> 5.0)
   pry
   rake (~> 10.0)
   rspec (~> 3.6.0)
