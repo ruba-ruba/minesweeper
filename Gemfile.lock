@@ -1,8 +1,10 @@
 PATH
   remote: .
   specs:
-    minesweeper-curses (0.3.2)
+    minesweeper-curses (0.3.3)
       curses (~> 1.0.2)
+      sequel (~> 4.46.0)
+      sqlite3 (~> 1.3.13)
 
 GEM
   remote: https://rubygems.org/
@@ -60,9 +62,7 @@ DEPENDENCIES
   pry
   rake (~> 10.0)
   rspec (~> 3.6.0)
-  sequel (~> 4.46.0)
   simplecov (~> 0.11.2)
-  sqlite3 (~> 1.3.13)
 
 BUNDLED WITH
    1.14.6

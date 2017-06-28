@@ -3,7 +3,6 @@
 require 'curses'
 include Curses
 
-require 'pry'
 require 'forwardable'
 require 'sequel'
 require_relative 'minesweeper/exceptions'
