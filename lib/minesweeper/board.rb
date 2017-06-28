@@ -134,9 +134,9 @@ module Minesweeper
       found_bombs_count = found_bombs.count
       reveal_bombs
       draw_board
-      window.setpos(height + 3, 0)
+      window.setpos(height + 1, 0)
       window.addstr e.message
-      window.setpos(height + 5, 0)
+      window.setpos(height + 3, 0)
       window.addstr <<~STR
         Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
 
