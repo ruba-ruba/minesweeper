@@ -66,13 +66,15 @@ module Minesweeper
       window.setpos(0, 1)
     end
 
+    def cell_x
+      curx / STEP
+    end
+
     def open_cell
-      cell_x = curx / STEP
       open_original(cury, cell_x)
     end
 
     def toggle_bomb_flag
-      cell_x = curx / STEP
       cell = cells[cury][cell_x]
       cell.toggle_bomb_flag!
       raise GameWon if game_won?

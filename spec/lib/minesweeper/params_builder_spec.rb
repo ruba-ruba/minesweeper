@@ -36,4 +36,19 @@ RSpec.describe Minesweeper::ParamsBuilder do
       end
     end
   end
+
+  # one should not test private methods!!!
+  describe '#validate_and_save' do
+    let(:board_params) do
+      ::Minesweeper::BoardParams.new(height: 'y', width: 'x', level: 'z')
+    end
+
+    it 'add errors to board_params & build' do
+      expect_any_instance_of(described_class).to receive(:build).once
+      subject.send(:validate_and_save, board_params)
+      expect(board_params.errors[:height]).not_to be_nil
+      expect(board_params.errors[:width]).not_to be_nil
+      expect(board_params.errors[:level]).not_to be_nil
+    end
+  end
 end
