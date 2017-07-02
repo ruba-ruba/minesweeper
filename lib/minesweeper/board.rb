@@ -14,9 +14,9 @@ module Minesweeper
 
     attr_reader :board_params, :cells, :window
 
-    def initialize(board_params:, window:)
+    def initialize(board_params)
       @board_params = board_params
-      @window = window
+      @window = Ui.instance.window
       @cells  = []
     end
 

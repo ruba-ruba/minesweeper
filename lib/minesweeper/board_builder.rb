@@ -7,8 +7,7 @@ module Minesweeper
   class BoardBuilder
     extend Forwardable
 
-    def initialize(window, flush_params:)
-      @window = window
+    def initialize(flush_params)
       @flush_params = flush_params
     end
 
@@ -27,7 +26,7 @@ module Minesweeper
     def_delegators :board_params, :height, :width, :level
 
     def create_board
-      Minesweeper::Board.new(board_params: board_params, window: window)
+      Minesweeper::Board.new(board_params)
     end
 
     def fill_with_cells
@@ -45,7 +44,7 @@ module Minesweeper
     end
 
     def params_builder
-      Minesweeper::ParamsBuilder.new(window, flush_params)
+      Minesweeper::ParamsBuilder.new(flush_params)
     end
   end
 end

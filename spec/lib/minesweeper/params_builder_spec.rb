@@ -1,10 +1,15 @@
 require 'spec_helper'
+require 'pry'
 
 RSpec.describe Minesweeper::ParamsBuilder do
   let(:flush_params) { true }
-  let(:window) { double(:fake_window).as_null_object }
+  let(:terminal_ui) { double(:terminal_ui).as_null_object }
 
-  subject { described_class.new(window, flush_params) }
+  subject { described_class.new(flush_params) }
+
+  before do
+    allow(subject).to receive(:ui) { terminal_ui }
+  end
 
   describe '#prepare' do
     context 'with default params' do
@@ -22,7 +27,7 @@ RSpec.describe Minesweeper::ParamsBuilder do
 
     context 'with custom params' do
       before do
-        allow(window).to receive(:getstr) { 'N' }
+        allow(terminal_ui).to receive(:getstr) { 'N' }
         allow_any_instance_of(described_class).to receive(:ask_y) { 20 }
         allow_any_instance_of(described_class).to receive(:ask_x) { 20 }
         allow_any_instance_of(described_class).to receive(:ask_level) { 'expert' }

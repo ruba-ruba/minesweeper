@@ -3,19 +3,12 @@
 module Minesweeper
   class GameInitializer
     def initialize
-      @window = Window.new(0, 0, 0, 0)
+      @window = nil
     end
 
     def start
-      init_screen
-      init_colors
-      cbreak
-      window.keypad = true
-      window.refresh
-      window.addch("\n")
-      window.addstr("Welcome to Minesweeper \n")
-      window.addstr("screen size: rows: #{window.maxy}; columns: #{window.maxx / Minesweeper::Board::STEP} \n")
-      window.addstr("controls: `space` to mark/unmark cell as bomb, `arrow keys` to navigate \n")
+      init_curses
+      Ui.greeting_message
       play
     rescue SystemExit, Interrupt
     ensure
@@ -31,12 +24,18 @@ module Minesweeper
 
     def play(flush_params = true)
       Minesweeper::BoardBuilder
-        .new(window, flush_params: flush_params)
+        .new(flush_params)
         .build
         .play
     end
 
     attr_reader :window
+
+    def init_curses
+      init_screen
+      init_colors
+      cbreak
+    end
 
     def init_colors
       Curses.start_color

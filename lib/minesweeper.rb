@@ -6,6 +6,7 @@ include Curses
 require 'forwardable'
 require 'sequel'
 require_relative 'minesweeper/exceptions'
+require_relative 'minesweeper/ui'
 require_relative 'minesweeper/board_params'
 require_relative 'minesweeper/board'
 require_relative 'minesweeper/board_builder'

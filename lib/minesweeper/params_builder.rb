@@ -7,11 +7,11 @@ module Minesweeper
 
     DEFAULTS = { height: 10, width: 10, level: 'advanced' }.freeze
 
-    attr_reader :window, :flush_params
+    attr_reader :flush_params, :ui
 
-    def initialize(window, flush_params)
-      @window = window
+    def initialize(flush_params)
       @flush_params = flush_params
+      @ui = Minesweeper::Ui
     end
 
     def_delegators :entry, :height, :width, :level
@@ -28,9 +28,9 @@ module Minesweeper
     end
 
     def build(y_position = 4)
-      window.addstr('Start game with default parameters? (Y/N)')
-      window.setpos(y_position, 42)
-      str = window.getstr
+      ui.params_message
+      ui.setpos(y_position, 42)
+      str = ui.getstr
       params =
         if str.casecmp('y').zero?
           DEFAULTS
@@ -46,30 +46,27 @@ module Minesweeper
         instance.save
         instance
       else
-        window.clear
-        window.addstr("Some of the parameters were invalid \n")
-        window.addstr(instance.errors.full_messages.join("\n"))
-        window.addstr("\n")
+        ui.validation_errors(instance.errors)
         build(instance.errors.count + 1)
       end
     end
 
     def ask_x
-      window.addstr('Number of columns: ')
-      x = window.getstr
-      max_x = window.maxx / Minesweeper::Board::STEP
+      ui.col_num
+      x = ui.getstr
+      max_x = ui.maxx / Minesweeper::Board::STEP
       x.to_i > max_x ? max_x : x
     end
 
     def ask_y
-      window.addstr('Number of rows: ')
-      y = window.getstr
-      y.to_i > window.maxy ? window.maxy - 1 : y
+      ui.row_num
+      y = ui.getstr
+      y.to_i > ui.maxy ? ui.maxy - 1 : y
     end
 
     def ask_level
-      window.addstr('Your Level (beginner/advanced/expert): ')
-      window.getstr
+      ui.level
+      ui.getstr
     end
   end
 end

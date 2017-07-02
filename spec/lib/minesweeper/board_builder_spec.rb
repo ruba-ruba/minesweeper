@@ -1,10 +1,15 @@
 require 'spec_helper'
+require 'pry'
 
 RSpec.describe Minesweeper::BoardBuilder do
-  let(:window) { double(:window).as_null_object }
+  let(:terminal_ui) { double(:ui).as_null_object }
   let(:flush_params) { false }
 
-  let(:board_builder) { described_class.new(window, flush_params: flush_params) }
+  let(:board_builder) { described_class.new(flush_params) }
+
+  before do
+    allow_any_instance_of(Minesweeper::ParamsBuilder).to receive(:ui) { terminal_ui }
+  end
 
   describe 'build' do
     it 'return instance of board' do
