@@ -9,25 +9,23 @@ module Minesweeper
     LEFT_RIGHT_PADDING = 2
     SPACE = ' '
 
-    def_delegators :@window, :curx, :cury
     def_delegators :board_params, :height, :width
 
-    attr_reader :board_params, :cells, :window
+    attr_reader :board_params, :cells, :ui
 
     def initialize(board_params)
       @board_params = board_params
-      @window = Ui.instance.window
-      @cells  = []
+      @ui = Minesweeper::Ui
+      @cells = []
     end
 
     def play(stdy = nil, stdx = nil)
-      window.keypad = true
       draw_board
-      window.setpos(stdy, stdx) if stdx && stdy
+      ui.setpos(stdy, stdx) if stdx && stdy
       noecho
 
       loop do
-        ch = window.getch
+        ch = ui.getch
         case ch
         when KEY_UP
           move_up
@@ -42,7 +40,7 @@ module Minesweeper
         when SPACE
           toggle_bomb_flag
         end
-        play(cury, curx)
+        play(ui.cury, ui.curx)
       end
     rescue GameWon, GameOver => e
       end_game(e)
@@ -52,30 +50,30 @@ module Minesweeper
     private
 
     def draw_board
-      window.clear
+      ui.clear
       cells.each_index do |row_index|
         (0..(width * 3 - 1)).each_slice(3).with_index do |cell_ary, index|
           cell = cells[row_index][index]
-          window.setpos(row_index, cell_ary[0])
-          window.attron(color_pair(COLOR_BLUE)) { window.addstr '[' }
-          window.attron(color_pair(cell.color)) { window.addstr cell.view }
-          window.attron(color_pair(COLOR_BLUE)) { window.addstr ']' }
+          ui.setpos(row_index, cell_ary[0])
+          ui.attron(color_pair(COLOR_BLUE)) { ui.addstr '[' }
+          ui.attron(color_pair(cell.color)) { ui.addstr cell.view }
+          ui.attron(color_pair(COLOR_BLUE)) { ui.addstr ']' }
         end
       end
-      window.refresh
-      window.setpos(0, 1)
+      ui.refresh
+      ui.setpos(0, 1)
     end
 
     def cell_x
-      curx / STEP
+      ui.curx / STEP
     end
 
     def open_cell
-      open_original(cury, cell_x)
+      open_original(ui.cury, cell_x)
     end
 
     def toggle_bomb_flag
-      cell = cells[cury][cell_x]
+      cell = cells[ui.cury][cell_x]
       cell.toggle_bomb_flag!
       raise GameWon if game_won?
     end
@@ -111,33 +109,33 @@ module Minesweeper
     end
 
     def move_up
-      return if cury.zero?
-      window.setpos(cury - 1, curx)
+      return if ui.cury.zero?
+      ui.setpos(ui.cury - 1, ui.curx)
     end
 
     def move_down
-      return if cury + 1 >= height
-      window.setpos(cury + 1, curx)
+      return if ui.cury + 1 >= height
+      ui.setpos(ui.cury + 1, ui.curx)
     end
 
     def move_left
-      return if curx <= LEFT_RIGHT_PADDING
-      window.setpos(cury, curx - STEP)
+      return if ui.curx <= LEFT_RIGHT_PADDING
+      ui.setpos(ui.cury, ui.curx - STEP)
     end
 
     def move_right
-      return if curx >= (width * 3 - LEFT_RIGHT_PADDING)
-      window.setpos(cury, curx + STEP)
+      return if ui.curx >= (width * 3 - LEFT_RIGHT_PADDING)
+      ui.setpos(ui.cury, ui.curx + STEP)
     end
 
     def end_game(e)
       found_bombs_count = found_bombs.count
       reveal_bombs
       draw_board
-      window.setpos(height + 1, 0)
-      window.addstr e.message
-      window.setpos(height + 3, 0)
-      window.addstr <<~STR
+      ui.setpos(height + 1, 0)
+      ui.addstr e.message
+      ui.setpos(height + 3, 0)
+      ui.addstr <<~STR
         Game Stats: you have found #{found_bombs_count} out of #{bombs.count} bombs
 
         - `R` to replay with same parameters
@@ -150,7 +148,7 @@ module Minesweeper
     # used when user won/lose game & decided to begin anew
     # eventually will be moved to game initializer
     def start_or_restart_game
-      case window.getch
+      case ui.getch
       when ENTER
         echo
         game_initializer.start

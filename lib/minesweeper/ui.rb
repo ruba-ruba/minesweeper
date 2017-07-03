@@ -20,7 +20,19 @@ module Minesweeper
       instance.respond_to?(:method_name) || super
     end
 
-    def_delegators :window, :clear, :addch, :addstr, :refresh, :maxy, :maxx, :getstr, :setpos
+    def_delegators :window,
+                   :clear,
+                   :addch,
+                   :addstr,
+                   :refresh,
+                   :maxy,
+                   :maxx,
+                   :getstr,
+                   :setpos,
+                   :attron,
+                   :getch,
+                   :curx,
+                   :cury
 
     def greeting_message
       clear
