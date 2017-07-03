@@ -2,10 +2,6 @@
 
 module Minesweeper
   class GameInitializer
-    def initialize
-      @window = nil
-    end
-
     def start
       init_curses
       Ui.greeting_message
@@ -28,8 +24,6 @@ module Minesweeper
         .build
         .play
     end
-
-    attr_reader :window
 
     def init_curses
       init_screen
