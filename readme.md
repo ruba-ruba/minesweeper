@@ -17,7 +17,9 @@
 
   - `git clone git@github.com:ruba-ruba/minesweeper.git`
   - `cd minesweeper`
-  - `rake build_and_install`
+  - `gem install bundler`
+  - `bundle install`
+  - `rake install`
 
 #### Launching
 
