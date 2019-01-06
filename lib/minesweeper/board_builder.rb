@@ -31,7 +31,7 @@ module Minesweeper
 
     def fill_with_cells
       height.times do
-        board.cells << Array.new(width) { Cell.new }
+        board.cells << Array.new(width) { Cells::Cell.new }
       end
     end
 

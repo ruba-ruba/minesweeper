@@ -7,7 +7,7 @@
 
 #### Requirements
 
-  - ruby 2.4.1 or higher
+  - ruby 2.4 or higher
 
 #### Setup
 

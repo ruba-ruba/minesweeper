@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Minesweeper::CellState do
+RSpec.describe Minesweeper::Cells::State do
   let(:cell_state) { described_class.new(color: nil, status: nil, view: nil) }
 
   context 'opened?' do

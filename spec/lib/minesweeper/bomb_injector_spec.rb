@@ -10,7 +10,7 @@ RSpec.describe Minesweeper::BombInjector do
   let(:board) do
     board = Minesweeper::Board.new(board_params)
     height.times do
-      board.cells << Array.new(width) { Minesweeper::Cell.new }
+      board.cells << Array.new(width) { Minesweeper::Cells::Cell.new }
     end
     board
   end

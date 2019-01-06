@@ -18,7 +18,7 @@ module Minesweeper
       cell_index = random_cell
       cell = board.cells[row_index][cell_index]
       unless cell.bomb?
-        board.cells[row_index][cell_index] = BombCell.new
+        board.cells[row_index][cell_index] = Cells::Bomb.new
         number -= 1
       end
       add_bombs(number)

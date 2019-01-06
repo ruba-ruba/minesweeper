@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Minesweeper::Cell do
+RSpec.describe Minesweeper::Cells::Cell do
   let(:cell) { described_class.new }
 
   describe '#open' do
