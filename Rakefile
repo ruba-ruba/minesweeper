@@ -8,8 +8,3 @@ Rake::TestTask.new(:test) do |t|
 end
 
 task :default => :test
-
-task :build_and_install do
-  sh('bundle install')
-  sh("gem install ./pkg/minesweeper-#{Minesweeper::VERSION}.gem")
-end
