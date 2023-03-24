@@ -9,7 +9,6 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    coderay (1.1.1)
     coveralls (0.8.13)
       json (~> 1.8)
       simplecov (~> 0.11.0)
@@ -20,11 +19,6 @@ GEM
     diff-lcs (1.3)
     docile (1.1.5)
     json (1.8.6)
-    method_source (0.8.2)
-    pry (0.10.4)
-      coderay (~> 1.1.0)
-      method_source (~> 0.8.1)
-      slop (~> 3.4)
     rake (10.5.0)
     rspec (3.6.0)
       rspec-core (~> 3.6.0)
@@ -45,7 +39,6 @@ GEM
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.0)
-    slop (3.6.0)
     sqlite3 (1.3.13)
     term-ansicolor (1.6.0)
       tins (~> 1.0)
@@ -59,10 +52,9 @@ DEPENDENCIES
   bundler (~> 1.14)
   coveralls
   minesweeper-curses!
-  pry
   rake (~> 10.0)
   rspec (~> 3.6.0)
   simplecov (~> 0.11.2)
 
 BUNDLED WITH
-   1.17.2
+   1.17.3
